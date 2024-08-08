@@ -1,2 +1,1 @@
-# swing-cookie
-Django Swing | Cookie
+# Django Swing | Cookie
