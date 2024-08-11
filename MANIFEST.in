@@ -1,3 +1,3 @@
 include README.md
-recursive-include swing_cookie/static *
-recursive-include swing_cookie/templates *
+recursive-include src/swing_cookie/static *
+recursive-include src/swing_cookie/templates *
