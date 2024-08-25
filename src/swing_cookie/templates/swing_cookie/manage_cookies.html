@@ -1,0 +1,23 @@
+<!-- templates/swing_cookie/manage_cookies.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Cookies</title>
+</head>
+<body>
+    <h1>Manage Cookies</h1>
+    <ul>
+        {% for cookie in cookies %}
+            <li>{{ cookie.name }}: {{ cookie.value }}</li>
+        {% endfor %}
+    </ul>
+    <form method="post" action="{% url 'set_cookie_view' %}">
+        {% csrf_token %}
+        <button type="submit">Set Cookie</button>
+    </form>
+    <form method="post" action="{% url 'delete_cookie_view' %}">
+        {% csrf_token %}
+        <button type="submit">Delete Cookie</button>
+    </form>
+</body>
+</html>
