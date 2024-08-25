@@ -1,0 +1,6 @@
+<form id="cookie-consent-form" method="post">
+    {% csrf_token %}
+    <p>We use cookies to enhance your experience. Do you consent to the use of cookies?</p>
+    <button type="submit" name="consent" value="yes">Yes</button>
+    <button type="submit" name="consent" value="no">No</button>
+</form>
