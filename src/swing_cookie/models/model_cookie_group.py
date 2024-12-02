@@ -1,7 +1,37 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Cookie Consent Model Module
+===================
+
+
+"""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Standard Library
+from typing import Optional
+
+# Import | Libraries
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-class CookieGroup(models.Model):
+# Import | Local
+
+
+# =============================================================================
+# Class
+# =============================================================================
+
+class CookieGroupModel(models.Model):
     """
     Cookie Group Model
     ==================
