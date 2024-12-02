@@ -25,6 +25,7 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
+from swing_cookie.models.model_cookie import CookieModel
 
 
 # =============================================================================
@@ -67,15 +68,20 @@ class DeleteAllCookiesView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and deletes all cookies.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
     def get(
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any]
+        **kwargs: Dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to delete all cookies present in the request.
@@ -101,6 +107,6 @@ class DeleteAllCookiesView(View):
 # =============================================================================
 
 __all__ = [
-    "cookie_delete_view",
-    "CookieDeleteView",
+    "delete_all_cookies_view",
+    "DeleteAllCookiesView",
 ]
