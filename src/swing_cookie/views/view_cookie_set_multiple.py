@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Set Views Module
 =======================
@@ -8,6 +13,7 @@ This module contains views for setting cookie values, including both
 function-based and class-based views.
 
 """
+
 
 # =============================================================================
 # Imports
@@ -22,6 +28,7 @@ from django.views import View
 
 # Import | Local Modules
 from .models import Cookie
+
 
 # =============================================================================
 # Function
@@ -46,9 +53,9 @@ def set_multiple_cookies_view(request: HttpRequest) -> HttpResponse:
     """
     response = HttpResponse("Multiple Cookies Set")
     cookies_to_set = {
-        'cookie_one': 'value_one',
-        'cookie_two': 'value_two',
-        'cookie_three': 'value_three',
+        "cookie_one": "value_one",
+        "cookie_two": "value_two",
+        "cookie_three": "value_three",
     }
 
     for name, value in cookies_to_set.items():
@@ -74,7 +81,12 @@ class SetMultipleCookiesView(View):
         Handles GET requests and sets multiple cookies.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
         Handles GET requests to set multiple cookies.
 
@@ -90,9 +102,9 @@ class SetMultipleCookiesView(View):
         """
         response = HttpResponse("Multiple Cookies Set")
         cookies_to_set = {
-            'cookie_one': 'value_one',
-            'cookie_two': 'value_two',
-            'cookie_three': 'value_three',
+            "cookie_one": "value_one",
+            "cookie_two": "value_two",
+            "cookie_three": "value_three",
         }
 
         for name, value in cookies_to_set.items():
