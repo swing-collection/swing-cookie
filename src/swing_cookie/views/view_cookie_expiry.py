@@ -25,6 +25,7 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
+from swing_cookie.models.model_cookie import CookieModel
 
 
 # =============================================================================
@@ -69,8 +70,13 @@ class ViewCookieExpiryView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and returns the expiry date of the cookie.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
     def get(
@@ -104,6 +110,6 @@ class ViewCookieExpiryView(View):
 # =============================================================================
 
 __all__ = [
-    "cookie_delete_view",
-    "CookieDeleteView",
+    "view_cookie_expiry_view",
+    "ViewCookieExpiryView",
 ]
