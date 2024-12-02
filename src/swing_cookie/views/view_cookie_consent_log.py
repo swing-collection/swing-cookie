@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Set Views Module
 =======================
@@ -24,7 +29,7 @@ from .models import Cookie
 
 
 # =============================================================================
-# Function
+# Functions
 # =============================================================================
 
 def log_cookie_consent_view(request: HttpRequest) -> HttpResponse:
@@ -32,7 +37,7 @@ def log_cookie_consent_view(request: HttpRequest) -> HttpResponse:
     Log Cookie Consent View Function
     ================================
 
-    Logs the user's cookie consent status and sets a cookie to indicate that 
+    Logs the user"s cookie consent status and sets a cookie to indicate that 
     consent was given.
 
     Parameters:
@@ -46,13 +51,13 @@ def log_cookie_consent_view(request: HttpRequest) -> HttpResponse:
         The response object indicating that the consent has been logged.
     """
     response = HttpResponse("Consent Logged")
-    consent_status = request.GET.get('consent', 'false')  # Example of consent being passed as a GET parameter
-    response.set_cookie('cookie_consent', consent_status)
+    consent_status = request.GET.get("consent", "false")  # Example of consent being passed as a GET parameter
+    response.set_cookie("cookie_consent", consent_status)
     return response
 
 
 # =============================================================================
-# Class
+# Classes
 # =============================================================================
 
 class LogCookieConsentView(View):
@@ -60,7 +65,7 @@ class LogCookieConsentView(View):
     Log Cookie Consent View Class
     =============================
 
-    A class-based view that logs the user's cookie consent status and sets a 
+    A class-based view that logs the user"s cookie consent status and sets a 
     cookie to indicate that consent was given.
 
     Methods:
@@ -71,7 +76,7 @@ class LogCookieConsentView(View):
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
         """
-        Handles GET requests to log the user's cookie consent status and set a 
+        Handles GET requests to log the user"s cookie consent status and set a 
         corresponding cookie.
 
         Parameters:
@@ -85,8 +90,8 @@ class LogCookieConsentView(View):
             The response object indicating that the consent has been logged.
         """
         response = HttpResponse("Consent Logged")
-        consent_status = request.GET.get('consent', 'false')
-        response.set_cookie('cookie_consent', consent_status)
+        consent_status = request.GET.get("consent", "false")
+        response.set_cookie("cookie_consent", consent_status)
         return response
 
 
