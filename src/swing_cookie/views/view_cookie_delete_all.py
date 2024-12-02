@@ -12,6 +12,7 @@ Cookie Delete Views Module
 
 """
 
+
 # =============================================================================
 # Imports
 # =============================================================================
@@ -24,7 +25,6 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
-
 
 
 # =============================================================================
@@ -71,7 +71,12 @@ class DeleteAllCookiesView(View):
         Handles GET requests and deletes all cookies.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any]
+    ) -> HttpResponse:
         """
         Handles GET requests to delete all cookies present in the request.
 
