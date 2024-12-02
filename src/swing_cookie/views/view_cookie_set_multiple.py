@@ -20,14 +20,14 @@ function-based and class-based views.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 # Import | Libraries
 from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
-from .models import Cookie
+from swing_cookie.models.model_cookie import CookieModel
 
 
 # =============================================================================
@@ -77,8 +77,13 @@ class SetMultipleCookiesView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and sets multiple cookies.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
     def get(
@@ -118,6 +123,6 @@ class SetMultipleCookiesView(View):
 # =============================================================================
 
 __all__ = [
-    "set_cookie_view",
-    "SetCookieView",
+    "set_multiple_cookies_view",
+    "SetMultipleCookiesView",
 ]
