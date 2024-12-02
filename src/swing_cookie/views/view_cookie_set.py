@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Set Views Module
 =======================
@@ -8,6 +13,7 @@ This module contains views for setting cookie values, including both
 function-based and class-based views.
 
 """
+
 
 # =============================================================================
 # Imports
@@ -23,6 +29,7 @@ from django.views import View
 # Import | Local Modules
 from .models import Cookie
 
+
 # =============================================================================
 # Function
 # =============================================================================
@@ -32,7 +39,7 @@ def set_cookie_view(request: HttpRequest) -> HttpResponse:
     Set Cookie View Function
     ========================
 
-    Sets a specific cookie named 'example_cookie' and saves it to the database.
+    Sets a specific cookie named "example_cookie" and saves it to the database.
 
     Parameters:
     -----------
@@ -46,10 +53,10 @@ def set_cookie_view(request: HttpRequest) -> HttpResponse:
     """
     response = HttpResponse("Cookie Set")
     cookie = Cookie(
-        name='example_cookie',
-        value='example_value',
+        name="example_cookie",
+        value="example_value",
         domain=request.get_host(),
-        path='/',
+        path="/",
         expires=None,
         secure=False,
         httponly=True
@@ -76,7 +83,7 @@ class SetCookieView(View):
     Set Cookie View Class
     =====================
 
-    A class-based view that sets a specific cookie named 'example_cookie' and
+    A class-based view that sets a specific cookie named "example_cookie" and
     saves it to the database.
 
     Methods:
@@ -85,9 +92,14 @@ class SetCookieView(View):
         Handles GET requests and sets the cookie.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
-        Handles GET requests to set the 'example_cookie'.
+        Handles GET requests to set the "example_cookie".
 
         Parameters:
         -----------
@@ -101,10 +113,10 @@ class SetCookieView(View):
         """
         response = HttpResponse("Cookie Set")
         cookie = Cookie(
-            name='example_cookie',
-            value='example_value',
+            name="example_cookie",
+            value="example_value",
             domain=request.get_host(),
-            path='/',
+            path="/",
             expires=None,
             secure=False,
             httponly=True
