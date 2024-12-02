@@ -26,6 +26,9 @@ from typing import Any, Dict, Optional
 from django.http import HttpResponse, HttpRequest
 from django.views import View
 
+# Import | Local Modules
+from swing_cookie.models.model_cookie import CookieModel
+
 
 # =============================================================================
 # Function
@@ -66,8 +69,13 @@ class GetCookieView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and returns the value of the cookie.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
     def get(
