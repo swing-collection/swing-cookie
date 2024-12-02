@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Model Module
-====================
+===================
 
 This module provides the `CookieModel` class, which represents a model for 
 storing and managing cookies in the database.
 
 """
+
 
 # =============================================================================
 # Imports
@@ -22,6 +28,7 @@ from django.utils.translation import gettext_lazy as _
 
 # Import | Local
 # from .managers import CookieManager  # Assuming you have a custom manager
+
 
 # =============================================================================
 # Class
@@ -61,24 +68,70 @@ class CookieModel(models.Model):
     # Manager for the CookieModel (optional)
     # objects = CookieManager()
 
+    cookiegroup = models.ForeignKey(
+        CookieGroup,
+        verbose_name=CookieGroup._meta.verbose_name,
+        on_delete=models.CASCADE,
+    )
+
     name = models.CharField(
+        _("Name"),
         max_length=255,
         help_text=_("The name of the cookie.")
+    )
+
+    description = models.TextField(
+        _("Description"),
+        blank=True,
+    )
+
+    domain = models.CharField(
+        _("Domain"),
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text=_("The domain for which the cookie is valid.")
+    )
+
+    path = models.CharField(
+        _("Path"),
+        blank=True,
+        max_length=255,
+        default='/',
+        help_text=_("The path for which the cookie is valid.")
     )
 
     value = models.TextField(
         help_text = _("The value of the cookie.")
     )
 
-    domain = models.CharField(max_length=255, blank=True, null=True, help_text=_("The domain for which the cookie is valid."))
-    path = models.CharField(max_length=255, default='/', help_text=_("The path for which the cookie is valid."))
+    expires = models.DateTimeField(
+        blank=True,
+        null=True,
+        help_text=_("The expiration date and time of the cookie.")
+    )
 
-    expires = models.DateTimeField(blank=True, null=True, help_text=_("The expiration date and time of the cookie."))
-    secure = models.BooleanField(default=False, help_text=_("Indicates whether the cookie is secure (sent only over HTTPS)."))
-    httponly = models.BooleanField(default=False, help_text=_("Indicates whether the cookie is HTTPOnly (not accessible via JavaScript)."))
+    secure = models.BooleanField(
+        default=False,
+        help_text=_("Indicates whether the cookie is secure (sent only over HTTPS).")
+    )
+    
+    httponly = models.BooleanField(
+        default=False,
+        help_text=_("Indicates whether the cookie is HTTPOnly (not accessible via JavaScript).")
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True, help_text=_("The timestamp when the cookie was created."))
-    updated_at = models.DateTimeField(auto_now=True, help_text=_("The timestamp when the cookie was last updated."))
+    created_at = models.DateTimeField(
+        _("Created"),
+        auto_now_add=True,
+        blank=True,
+        help_text=_("The timestamp when the cookie was created.")
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text=_("The timestamp when the cookie was last updated.")
+    )
 
     class Meta:
         """
@@ -94,9 +147,12 @@ class CookieModel(models.Model):
             models.UniqueConstraint(
                 fields=("name", "domain", "path"),
                 name="unique_cookie_constraint",
+                # fields=("cookiegroup", "name", "domain"),
+                # name="natural_key",
             ),
         ]
         ordering = ["-created_at"]
+
 
     def __str__(self) -> str:
         """
@@ -110,48 +166,9 @@ class CookieModel(models.Model):
         str
             The name of the cookie.
         """
-        return self.name
-
-
-# =============================================================================
-# Module Exports
-# =============================================================================
-
-__all__ = [
-    "CookieModel",
-]
-
-
-
-
-
-class Cookie(models.Model):
-    cookiegroup = models.ForeignKey(
-        CookieGroup,
-        verbose_name=CookieGroup._meta.verbose_name,
-        on_delete=models.CASCADE,
-    )
-    name = models.CharField(_("Name"), max_length=250)
-    description = models.TextField(_("Description"), blank=True)
-    path = models.TextField(_("Path"), blank=True, default="/")
-    domain = models.CharField(_("Domain"), max_length=250, blank=True)
-    created = models.DateTimeField(_("Created"), auto_now_add=True, blank=True)
-
-    objects = CookieManager()
-
-    class Meta:
-        verbose_name = _("Cookie")
-        verbose_name_plural = _("Cookies")
-        constraints = [
-            models.UniqueConstraint(
-                fields=("cookiegroup", "name", "domain"),
-                name="natural_key",
-            ),
-        ]
-        ordering = ["-created"]
-
-    def __str__(self):
-        return "%s %s%s" % (self.name, self.domain, self.path)
+        name = str(self.name)
+        return name
+        # return "%s %s%s" % (self.name, self.domain, self.path)
 
     @clear_cache_after
     def save(self, *args, **kwargs):
@@ -172,3 +189,11 @@ class Cookie(models.Model):
 
     def get_version(self):
         return self.created.isoformat()
+
+# =============================================================================
+# Module Exports
+# =============================================================================
+
+__all__ = [
+    "CookieModel",
+]
