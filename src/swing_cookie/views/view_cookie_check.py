@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Set Views Module
 =======================
@@ -7,6 +12,7 @@ Cookie Set Views Module
 
 
 """
+
 
 # =============================================================================
 # Imports
@@ -22,8 +28,9 @@ from django.views import View
 # Import | Local Modules
 from .models import Cookie
 
+
 # =============================================================================
-# Function
+# Functions
 # =============================================================================
 
 def check_cookie_view(request: HttpRequest) -> HttpResponse:
@@ -31,7 +38,7 @@ def check_cookie_view(request: HttpRequest) -> HttpResponse:
     Check Cookie Existence View Function
     ====================================
 
-    Checks if a specific cookie named 'example_cookie' exists.
+    Checks if a specific cookie named "example_cookie" exists.
 
     Parameters:
     -----------
@@ -43,7 +50,7 @@ def check_cookie_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object indicating whether the cookie exists or not.
     """
-    cookie_exists = 'example_cookie' in request.COOKIES
+    cookie_exists = "example_cookie" in request.COOKIES
     if cookie_exists:
         return HttpResponse("Cookie exists")
     else:
@@ -51,7 +58,7 @@ def check_cookie_view(request: HttpRequest) -> HttpResponse:
 
 
 # =============================================================================
-# Class
+# Classes
 # =============================================================================
 
 class CheckCookieView(View):
@@ -59,7 +66,7 @@ class CheckCookieView(View):
     Check Cookie Existence View Class
     =================================
 
-    A class-based view that checks if a specific cookie named 'example_cookie' 
+    A class-based view that checks if a specific cookie named "example_cookie" 
     exists.
 
     Methods:
@@ -70,7 +77,7 @@ class CheckCookieView(View):
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
         """
-        Handles GET requests to check if the 'example_cookie' exists.
+        Handles GET requests to check if the "example_cookie" exists.
 
         Parameters:
         -----------
@@ -82,7 +89,7 @@ class CheckCookieView(View):
         HttpResponse
             The response object indicating whether the cookie exists or not.
         """
-        cookie_exists = 'example_cookie' in request.COOKIES
+        cookie_exists = "example_cookie" in request.COOKIES
         if cookie_exists:
             return HttpResponse("Cookie exists")
         else:
