@@ -14,6 +14,7 @@ class-based views for deleting cookies.
 
 """
 
+
 # =============================================================================
 # Imports
 # =============================================================================
@@ -38,7 +39,7 @@ def cookie_delete_view(request: HttpRequest) -> HttpResponse:
     Cookie Delete View Function
     ===========================
 
-    Deletes a specific cookie named 'example_cookie'.
+    Deletes a specific cookie named "example_cookie".
 
     Parameters:
     -----------
@@ -51,7 +52,7 @@ def cookie_delete_view(request: HttpRequest) -> HttpResponse:
         The response object indicating that the cookie has been deleted.
     """
     response = HttpResponse("Cookie Deleted")
-    response.delete_cookie('example_cookie')
+    response.delete_cookie("example_cookie")
     return response
 
 
@@ -64,7 +65,7 @@ class CookieDeleteView(View):
     Cookie Delete View Class
     ========================
 
-    A class-based view that deletes a specific cookie named 'example_cookie'.
+    A class-based view that deletes a specific cookie named "example_cookie".
 
     Methods:
     --------
@@ -72,9 +73,14 @@ class CookieDeleteView(View):
         Handles GET requests and deletes the cookie.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any]
+    ) -> HttpResponse:
         """
-        Handles GET requests to delete the 'example_cookie'.
+        Handles GET requests to delete the "example_cookie".
 
         Parameters:
         -----------
@@ -87,9 +93,8 @@ class CookieDeleteView(View):
             The response object indicating that the cookie has been deleted.
         """
         response = HttpResponse("Cookie Deleted")
-        response.delete_cookie('example_cookie')
+        response.delete_cookie("example_cookie")
         return response
-
 
 
 # =============================================================================
