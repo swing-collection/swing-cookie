@@ -14,6 +14,7 @@ class-based views for deleting cookies.
 
 """
 
+
 # =============================================================================
 # Imports
 # =============================================================================
@@ -38,7 +39,7 @@ def clear_specific_cookies_view(request: HttpRequest) -> HttpResponse:
     Clear Specific Cookies View Function
     ====================================
 
-    Clears all cookies that start with a specific prefix (e.g., 'example_').
+    Clears all cookies that start with a specific prefix (e.g., "example_").
 
     Parameters:
     -----------
@@ -69,7 +70,7 @@ class ClearSpecificCookiesView(View):
     =================================
 
     A class-based view that clears cookies based on certain criteria, such as 
-    those that start with a specific prefix (e.g., 'example_').
+    those that start with a specific prefix (e.g., "example_").
 
     Methods:
     --------
