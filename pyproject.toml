@@ -48,7 +48,7 @@ Django = "^5.1"
 [tool.poetry.dev-dependencies]
 pytest = "^8.3.2"
 pytest-django = "^4.5.2"
-pytest-cov = "^5.0.0"       # Code coverage for tests
+pytest-cov = "^6.0.0"       # Code coverage for tests
 black = "^24.8.0"           # Code formatter
 flake8 = "^7.1.0"           # Linter for code quality
 mypy = "^1.11.1"            # Static type checker
