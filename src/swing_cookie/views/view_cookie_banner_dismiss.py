@@ -25,13 +25,16 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
+from swing_cookie.models.model_cookie import CookieModel
 
 
 # =============================================================================
 # Function
 # =============================================================================
 
-def dismiss_cookie_banner_view(request: HttpRequest) -> HttpResponse:
+def dismiss_cookie_banner_view(
+    request: HttpRequest
+) -> HttpResponse:
     """
     Dismiss Cookie Banner View Function
     ===================================
@@ -68,11 +71,21 @@ class DismissCookieBannerView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and sets the cookie.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
         Handles GET requests to set a cookie indicating the banner has been 
         dismissed.
@@ -86,10 +99,10 @@ class DismissCookieBannerView(View):
         --------
             HttpResponse
         The response object indicating that the banner has been dismissed.
-    """
-    response = HttpResponse("Banner Dismissed")
-    response.set_cookie("cookie_banner_dismissed", "true")
-    return response
+        """
+        response = HttpResponse("Banner Dismissed")
+        response.set_cookie("cookie_banner_dismissed", "true")
+        return response
 
 # =============================================================================
 # Module Exports
