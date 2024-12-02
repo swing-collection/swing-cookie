@@ -12,6 +12,7 @@ Cookie Delete Views Module
 
 """
 
+
 # =============================================================================
 # Imports
 # =============================================================================
@@ -24,7 +25,6 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
-
 
 
 # =============================================================================
@@ -50,7 +50,7 @@ def dismiss_cookie_banner_view(request: HttpRequest) -> HttpResponse:
         The response object indicating that the banner has been dismissed.
     """
     response = HttpResponse("Banner Dismissed")
-    response.set_cookie('cookie_banner_dismissed', 'true')
+    response.set_cookie("cookie_banner_dismissed", "true")
     return response
 
 
@@ -88,7 +88,7 @@ class DismissCookieBannerView(View):
         The response object indicating that the banner has been dismissed.
     """
     response = HttpResponse("Banner Dismissed")
-    response.set_cookie('cookie_banner_dismissed', 'true')
+    response.set_cookie("cookie_banner_dismissed", "true")
     return response
 
 # =============================================================================
