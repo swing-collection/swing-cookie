@@ -27,7 +27,7 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
-
+from swing_cookie.models.model_cookie import CookieModel
 
 
 # =============================================================================
@@ -53,7 +53,9 @@ def clear_specific_cookies_view(request: HttpRequest) -> HttpResponse:
     """
     response = HttpResponse("Specific Cookies Cleared")
     prefix = "example_"
-    cookies_to_clear = [cookie for cookie in request.COOKIES if cookie.startswith(prefix)]
+    cookies_to_clear = [
+        cookie for cookie in request.COOKIES if cookie.startswith(prefix)
+    ]
 
     for cookie in cookies_to_clear:
         response.delete_cookie(cookie)
@@ -74,11 +76,21 @@ class ClearSpecificCookiesView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and clears the specific cookies.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
         Handles GET requests to clear cookies that start with a specific prefix.
 
@@ -94,7 +106,9 @@ class ClearSpecificCookiesView(View):
         """
         response = HttpResponse("Specific Cookies Cleared")
         prefix = "example_"
-        cookies_to_clear = [cookie for cookie in request.COOKIES if cookie.startswith(prefix)]
+        cookies_to_clear = [
+            cookie for cookie in request.COOKIES if cookie.startswith(prefix)
+        ]
 
         for cookie in cookies_to_clear:
             response.delete_cookie(cookie)
@@ -108,6 +122,6 @@ class ClearSpecificCookiesView(View):
 # =============================================================================
 
 __all__ = [
-    "cookie_delete_view",
-    "CookieDeleteView",
+    "clear_specific_cookies_view",
+    "ClearSpecificCookiesView",
 ]
