@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Set Views Module
 =======================
@@ -21,6 +26,7 @@ from django.views import View
 
 # Import | Local Modules
 from .models import Cookie
+
 
 # =============================================================================
 # Function
@@ -44,7 +50,9 @@ def list_cookies_view(request: HttpRequest) -> HttpResponse:
         The response object containing a list of all cookies and their values.
     """
     cookies = request.COOKIES
-    cookies_list = ", ".join([f"{key}: {value}" for key, value in cookies.items()])
+    cookies_list = ", ".join(
+        [f"{key}: {value}" for key, value in cookies.items()]
+    )
     return HttpResponse(f"Cookies: {cookies_list}")
 
 
@@ -65,7 +73,12 @@ class ListCookiesView(View):
         Handles GET requests and lists all cookies.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any]
+    ) -> HttpResponse:
         """
         Handles GET requests to list all cookies present in the request.
 
@@ -80,7 +93,9 @@ class ListCookiesView(View):
             The response object containing a list of all cookies and their values.
         """
         cookies = request.COOKIES
-        cookies_list = ", ".join([f"{key}: {value}" for key, value in cookies.items()])
+        cookies_list = ", ".join(
+            [f"{key}: {value}" for key, value in cookies.items()]
+        )
         return HttpResponse(f"Cookies: {cookies_list}")
 
 
