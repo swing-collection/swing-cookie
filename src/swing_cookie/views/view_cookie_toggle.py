@@ -14,6 +14,7 @@ class-based views for deleting cookies.
 
 """
 
+
 # =============================================================================
 # Imports
 # =============================================================================
@@ -28,7 +29,6 @@ from django.views import View
 # Import | Local Modules
 
 
-
 # =============================================================================
 # Function
 # =============================================================================
@@ -38,7 +38,7 @@ def toggle_cookie_value_view(request: HttpRequest) -> HttpResponse:
     Toggle Cookie Value View Function
     =================================
 
-    Toggles the value of 'toggle_cookie' between "on" and "off".
+    Toggles the value of "toggle_cookie" between "on" and "off".
 
     Parameters:
     -----------
@@ -50,10 +50,10 @@ def toggle_cookie_value_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object indicating that the cookie value has been toggled.
     """
-    current_value = request.COOKIES.get('toggle_cookie', 'off')
-    new_value = 'on' if current_value == 'off' else 'off'
+    current_value = request.COOKIES.get("toggle_cookie", "off")
+    new_value = "on" if current_value == "off" else "off"
     response = HttpResponse(f"Cookie toggled to {new_value}")
-    response.set_cookie('toggle_cookie', new_value)
+    response.set_cookie("toggle_cookie", new_value)
     return response
 
 
@@ -66,7 +66,7 @@ class ToggleCookieValueView(View):
     Toggle Cookie Value View Class
     ==============================
 
-    A class-based view that toggles the value of 'toggle_cookie' between "on" 
+    A class-based view that toggles the value of "toggle_cookie" between "on" 
     and "off".
 
     Methods:
@@ -75,9 +75,14 @@ class ToggleCookieValueView(View):
         Handles GET requests and toggles the cookie value.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
-        Handles GET requests to toggle the value of 'toggle_cookie' between 
+        Handles GET requests to toggle the value of "toggle_cookie" between 
         "on" and "off".
 
         Parameters:
@@ -90,10 +95,10 @@ class ToggleCookieValueView(View):
         HttpResponse
             The response object indicating that the cookie value has been toggled.
         """
-        current_value = request.COOKIES.get('toggle_cookie', 'off')
-        new_value = 'on' if current_value == 'off' else 'off'
+        current_value = request.COOKIES.get("toggle_cookie", "off")
+        new_value = "on" if current_value == "off" else "off"
         response = HttpResponse(f"Cookie toggled to {new_value}")
-        response.set_cookie('toggle_cookie', new_value)
+        response.set_cookie("toggle_cookie", new_value)
         return response
 
 
