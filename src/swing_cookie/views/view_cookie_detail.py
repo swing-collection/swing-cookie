@@ -12,6 +12,7 @@ Cookie Delete Views Module
 
 """
 
+
 # =============================================================================
 # Imports
 # =============================================================================
@@ -26,7 +27,6 @@ from django.views import View
 # Import | Local Modules
 
 
-
 # =============================================================================
 # Function
 # =============================================================================
@@ -37,7 +37,7 @@ def view_cookie_details_view(request: HttpRequest) -> HttpResponse:
     =================================
 
     Retrieves detailed information about a specific cookie named 
-    'example_cookie'.
+    "example_cookie".
 
     Parameters:
     -----------
@@ -50,7 +50,7 @@ def view_cookie_details_view(request: HttpRequest) -> HttpResponse:
         The response object containing detailed information about the cookie.
     """
     try:
-        cookie = Cookie.objects.get(name='example_cookie')
+        cookie = Cookie.objects.get(name="example_cookie")
         details = f"Name: {cookie.name}, Value: {cookie.value}, Domain: {cookie.domain}, " \
                   f"Path: {cookie.path}, Expires: {cookie.expires}, Secure: {cookie.secure}, " \
                   f"HTTPOnly: {cookie.httponly}"
@@ -68,7 +68,7 @@ class ViewCookieDetailsView(View):
     View Cookie Details View Class
     ==============================
     A class-based view that retrieves detailed information about a specific 
-    cookie named 'example_cookie'.
+    cookie named "example_cookie".
 
     Methods:
     --------
@@ -76,10 +76,15 @@ class ViewCookieDetailsView(View):
         Handles GET requests and returns detailed information about the cookie.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any]
+    ) -> HttpResponse:
         """
         Handles GET requests to retrieve detailed information about the 
-        'example_cookie'.
+        "example_cookie".
 
         Parameters:
         -----------
@@ -92,7 +97,7 @@ class ViewCookieDetailsView(View):
             The response object containing detailed information about the cookie.
         """
         try:
-            cookie = Cookie.objects.get(name='example_cookie')
+            cookie = Cookie.objects.get(name="example_cookie")
             details = f"Name: {cookie.name}, Value: {cookie.value}, Domain: {cookie.domain}, " \
                     f"Path: {cookie.path}, Expires: {cookie.expires}, Secure: {cookie.secure}, " \
                     f"HTTPOnly: {cookie.httponly}"
