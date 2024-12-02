@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Set Views Module
 =======================
@@ -21,6 +26,7 @@ from django.views import View
 # Import | Local Modules
 from .models import Cookie
 
+
 # =============================================================================
 # Function
 # =============================================================================
@@ -30,7 +36,7 @@ def update_cookie_view(request: HttpRequest) -> HttpResponse:
     Update Cookie View Function
     ===========================
 
-    Updates the value of a specific cookie named 'example_cookie'.
+    Updates the value of a specific cookie named "example_cookie".
 
     Parameters:
     -----------
@@ -44,7 +50,7 @@ def update_cookie_view(request: HttpRequest) -> HttpResponse:
     """
     response = HttpResponse("Cookie Updated")
     new_value = "updated_value"  # This value can be dynamic or retrieved from request data
-    response.set_cookie('example_cookie', new_value)
+    response.set_cookie("example_cookie", new_value)
     return response
 
 
@@ -58,7 +64,7 @@ class UpdateCookieView(View):
     ========================
 
     A class-based view that updates the value of a specific cookie named 
-    'example_cookie'.
+    "example_cookie".
 
     Methods:
     --------
@@ -66,9 +72,14 @@ class UpdateCookieView(View):
         Handles GET requests and updates the cookie value.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
-        Handles GET requests to update the value of the 'example_cookie'.
+        Handles GET requests to update the value of the "example_cookie".
 
         Parameters:
         -----------
@@ -82,7 +93,7 @@ class UpdateCookieView(View):
         """
         response = HttpResponse("Cookie Updated")
         new_value = "updated_value"
-        response.set_cookie('example_cookie', new_value)
+        response.set_cookie("example_cookie", new_value)
         return response
 
 
