@@ -52,9 +52,11 @@ class CookiePolicy(models.Model):
     """
 
     version = models.CharField(max_length=50, unique=True, help_text=_("The version of the cookie policy."))
+
     content = models.TextField(help_text=_("The content of the cookie policy."))
 
     created_at = models.DateTimeField(auto_now_add=True, help_text=_("The timestamp when the policy was created."))
+
     updated_at = models.DateTimeField(auto_now=True, help_text=_("The timestamp when the policy was last updated."))
 
     class Meta:
