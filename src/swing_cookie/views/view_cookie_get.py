@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Retrieval Views Module
 =============================
@@ -8,6 +13,7 @@ This module contains views for retrieving cookie values, including both
 function-based and class-based views.
 
 """
+
 
 # =============================================================================
 # Imports
@@ -20,6 +26,7 @@ from typing import Any, Dict, Optional
 from django.http import HttpResponse, HttpRequest
 from django.views import View
 
+
 # =============================================================================
 # Function
 # =============================================================================
@@ -29,7 +36,7 @@ def get_cookie_view(request: HttpRequest) -> HttpResponse:
     Get Cookie View Function
     ========================
 
-    Retrieves the value of a specific cookie named 'example_cookie'.
+    Retrieves the value of a specific cookie named "example_cookie".
 
     Parameters:
     -----------
@@ -39,9 +46,9 @@ def get_cookie_view(request: HttpRequest) -> HttpResponse:
     Returns:
     --------
     HttpResponse
-        The response object containing the value of the 'example_cookie'.
+        The response object containing the value of the "example_cookie".
     """
-    cookie_value: Optional[str] = request.COOKIES.get('example_cookie')
+    cookie_value: Optional[str] = request.COOKIES.get("example_cookie")
     return HttpResponse(f"Cookie Value: {cookie_value}")
 
 
@@ -55,7 +62,7 @@ class GetCookieView(View):
     =====================
 
     A class-based view that retrieves the value of a specific cookie named 
-    'example_cookie'.
+    "example_cookie".
 
     Methods:
     --------
@@ -63,9 +70,14 @@ class GetCookieView(View):
         Handles GET requests and returns the value of the cookie.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
-        Handles GET requests to retrieve the value of the 'example_cookie'.
+        Handles GET requests to retrieve the value of the "example_cookie".
 
         Parameters:
         -----------
@@ -75,9 +87,9 @@ class GetCookieView(View):
         Returns:
         --------
         HttpResponse
-            The response object containing the value of the 'example_cookie'.
+            The response object containing the value of the "example_cookie".
         """
-        cookie_value: Optional[str] = request.COOKIES.get('example_cookie')
+        cookie_value: Optional[str] = request.COOKIES.get("example_cookie")
         return HttpResponse(f"Cookie Value: {cookie_value}")
 
 
