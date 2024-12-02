@@ -25,13 +25,16 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
+from swing_cookie.models.model_cookie import CookieModel
 
 
 # =============================================================================
 # Function
 # =============================================================================
 
-def view_cookie_details_view(request: HttpRequest) -> HttpResponse:
+def view_cookie_details_view(
+    request: HttpRequest
+) -> HttpResponse:
     """
     View Cookie Details View Function
     =================================
@@ -50,12 +53,12 @@ def view_cookie_details_view(request: HttpRequest) -> HttpResponse:
         The response object containing detailed information about the cookie.
     """
     try:
-        cookie = Cookie.objects.get(name="example_cookie")
+        cookie = CookieModel.objects.get(name="example_cookie")
         details = f"Name: {cookie.name}, Value: {cookie.value}, Domain: {cookie.domain}, " \
                   f"Path: {cookie.path}, Expires: {cookie.expires}, Secure: {cookie.secure}, " \
                   f"HTTPOnly: {cookie.httponly}"
         return HttpResponse(f"Cookie Details: {details}")
-    except Cookie.DoesNotExist:
+    except CookieModel.DoesNotExist:
         return HttpResponse("Cookie not found")
 
 
@@ -72,15 +75,20 @@ class ViewCookieDetailsView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and returns detailed information about the cookie.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
     def get(
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any]
+        **kwargs: Dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to retrieve detailed information about the 
@@ -97,12 +105,12 @@ class ViewCookieDetailsView(View):
             The response object containing detailed information about the cookie.
         """
         try:
-            cookie = Cookie.objects.get(name="example_cookie")
+            cookie = CookieModel.objects.get(name="example_cookie")
             details = f"Name: {cookie.name}, Value: {cookie.value}, Domain: {cookie.domain}, " \
                     f"Path: {cookie.path}, Expires: {cookie.expires}, Secure: {cookie.secure}, " \
                     f"HTTPOnly: {cookie.httponly}"
             return HttpResponse(f"Cookie Details: {details}")
-        except Cookie.DoesNotExist:
+        except CookieModel.DoesNotExist:
             return HttpResponse("Cookie not found")
 
 # =============================================================================
@@ -110,6 +118,6 @@ class ViewCookieDetailsView(View):
 # =============================================================================
 
 __all__ = [
-    "cookie_delete_view",
-    "CookieDeleteView",
+    "view_cookie_details_view",
+    "ViewCookieDetailsView",
 ]
