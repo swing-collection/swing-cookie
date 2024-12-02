@@ -19,14 +19,14 @@ Cookie Set Views Module
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 # Import | Libraries
 from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
-from .models import Cookie
+from swing_cookie.models.model_cookie import CookieModel
 
 
 # =============================================================================
@@ -71,11 +71,21 @@ class CheckCookieView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and checks for the existence of the cookie.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
         Handles GET requests to check if the "example_cookie" exists.
 
@@ -101,6 +111,6 @@ class CheckCookieView(View):
 # =============================================================================
 
 __all__ = [
-    "set_cookie_view",
-    "SetCookieView",
+    "check_cookie_view",
+    "CheckCookieView",
 ]
