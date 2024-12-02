@@ -18,14 +18,14 @@ Cookie Set Views Module
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 # Import | Libraries
 from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
-from .models import Cookie
+from swing_cookie.models.model_cookie import CookieModel
 
 
 # =============================================================================
@@ -51,7 +51,8 @@ def log_cookie_consent_view(request: HttpRequest) -> HttpResponse:
         The response object indicating that the consent has been logged.
     """
     response = HttpResponse("Consent Logged")
-    consent_status = request.GET.get("consent", "false")  # Example of consent being passed as a GET parameter
+    # Example of consent being passed as a GET parameter
+    consent_status = request.GET.get("consent", "false")
     response.set_cookie("cookie_consent", consent_status)
     return response
 
@@ -70,11 +71,21 @@ class LogCookieConsentView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and logs the consent status.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
         Handles GET requests to log the user"s cookie consent status and set a 
         corresponding cookie.
@@ -100,6 +111,6 @@ class LogCookieConsentView(View):
 # =============================================================================
 
 __all__ = [
-    "set_cookie_view",
-    "SetCookieView",
+    "log_cookie_consent_view",
+    "LogCookieConsentView",
 ]
