@@ -17,14 +17,14 @@ Cookie Set Views Module
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 # Import | Libraries
 from django.http import HttpResponse, HttpRequest
 from django.views import View
 
 # Import | Local Modules
-from .models import Cookie
+from swing_cookie.models.model_cookie import CookieModel
 
 
 # =============================================================================
@@ -49,7 +49,8 @@ def update_cookie_view(request: HttpRequest) -> HttpResponse:
         The response object indicating that the cookie has been updated.
     """
     response = HttpResponse("Cookie Updated")
-    new_value = "updated_value"  # This value can be dynamic or retrieved from request data
+    # This value can be dynamic or retrieved from request data
+    new_value = "updated_value"
     response.set_cookie("example_cookie", new_value)
     return response
 
@@ -68,7 +69,12 @@ class UpdateCookieView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         Handles GET requests and updates the cookie value.
     """
 
@@ -102,6 +108,6 @@ class UpdateCookieView(View):
 # =============================================================================
 
 __all__ = [
-    "set_cookie_view",
-    "SetCookieView",
+    "update_cookie_view",
+    "UpdateCookieView",
 ]
