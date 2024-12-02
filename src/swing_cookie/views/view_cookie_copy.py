@@ -26,6 +26,9 @@ from typing import Any, Dict, Optional
 from django.http import HttpResponse, HttpRequest
 from django.views import View
 
+# Import | Local Modules
+from swing_cookie.models.model_cookie import CookieModel
+
 
 # =============================================================================
 # Functions
@@ -65,16 +68,26 @@ class CopyCookieView(View):
     Copy Cookie View Class
     ======================
 
-    A class-based view that copies the value of "example_cookie" to a new cookie 
-    named "copied_cookie".
+    A class-based view that copies the value of "example_cookie" to a
+    new cookie named "copied_cookie".
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
-        Handles GET requests and copies the cookie value.
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
+        Handles GET requests and updates the cookie value.
     """
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Dict[str, Any],
+    ) -> HttpResponse:
         """
         Handles GET requests to copy the value of "example_cookie" to a new 
         cookie.
@@ -102,6 +115,6 @@ class CopyCookieView(View):
 # =============================================================================
 
 __all__ = [
-    "get_cookie_view",
-    "GetCookieView",
+    "copy_cookie_view",
+    "CopyCookieView",
 ]
