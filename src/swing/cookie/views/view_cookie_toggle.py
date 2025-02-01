@@ -34,7 +34,9 @@ from django.views import View
 # =============================================================================
 
 
-def toggle_cookie_value_view(request: HttpRequest) -> HttpResponse:
+def toggle_cookie_value_view(
+    request: HttpRequest,
+) -> HttpResponse:
     """
     Toggle Cookie Value View Function
     =================================
@@ -50,6 +52,7 @@ def toggle_cookie_value_view(request: HttpRequest) -> HttpResponse:
     --------
     HttpResponse
         The response object indicating that the cookie value has been toggled.
+
     """
     current_value = request.COOKIES.get("toggle_cookie", "off")
     new_value = "on" if current_value == "off" else "off"
@@ -80,6 +83,7 @@ class ToggleCookieValueView(View):
         **kwargs: Dict[str, Any],
     ) -> HttpResponse:
         Handles GET requests and updates the cookie value.
+
     """
 
     def get(
@@ -113,7 +117,7 @@ class ToggleCookieValueView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: list[str] = [
     "toggle_cookie_value_view",
     "ToggleCookieValueView",
 ]

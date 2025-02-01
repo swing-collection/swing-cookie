@@ -111,7 +111,7 @@ class CheckCookieView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: list[str] = [
     "check_cookie_view",
     "CheckCookieView",
 ]

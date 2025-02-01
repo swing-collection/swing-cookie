@@ -115,7 +115,7 @@ class CopyCookieView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: list[str] = [
     "copy_cookie_view",
     "CopyCookieView",
 ]

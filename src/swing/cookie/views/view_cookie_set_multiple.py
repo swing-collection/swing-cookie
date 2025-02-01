@@ -34,7 +34,9 @@ from django.views import View
 # =============================================================================
 
 
-def set_multiple_cookies_view(request: HttpRequest) -> HttpResponse:
+def set_multiple_cookies_view(
+    request: HttpRequest,
+) -> HttpResponse:
     """
     Set Multiple Cookies View Function
     ==================================
@@ -123,7 +125,7 @@ class SetMultipleCookiesView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: list[str] = [
     "set_multiple_cookies_view",
     "SetMultipleCookiesView",
 ]
