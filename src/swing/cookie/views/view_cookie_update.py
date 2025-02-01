@@ -19,12 +19,12 @@ Cookie Set Views Module
 # Import | Standard Library
 from typing import Any, Dict
 
+# Import | Local Modules
+from cookie.models.model_cookie import CookieModel
+
 # Import | Libraries
 from django.http import HttpRequest, HttpResponse
 from django.views import View
-
-# Import | Local Modules
-from swing_cookie.models.model_cookie import CookieModel
 
 # =============================================================================
 # Function

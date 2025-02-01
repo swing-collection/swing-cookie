@@ -20,17 +20,17 @@ Cookie Delete Views Module
 # Import | Standard Library
 from typing import Any, Dict
 
-# Import | Libraries
-from django.http import HttpResponse, HttpRequest
-from django.views import View
-
 # Import | Local Modules
-from swing_cookie.models.model_cookie import CookieModel
+from cookie.models.model_cookie import CookieModel
 
+# Import | Libraries
+from django.http import HttpRequest, HttpResponse
+from django.views import View
 
 # =============================================================================
 # Function
 # =============================================================================
+
 
 def delete_all_cookies_view(request: HttpRequest) -> HttpResponse:
     """
@@ -58,6 +58,7 @@ def delete_all_cookies_view(request: HttpRequest) -> HttpResponse:
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class DeleteAllCookiesView(View):
     """
