@@ -80,4 +80,4 @@ swing_cookie = "swing_cookie.__main__:main"  # Entry point for the package
 # =============================================================================
 
 [tool.poetry.plugins."django.apps"]
-"swing_cookie" = "swing_cookie.apps.HelloConfig"
+"swing_cookie" = "swing_cookie.apps.CookieConfig"
