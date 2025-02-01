@@ -35,7 +35,7 @@ from django.utils.translation import gettext_lazy as _
 # =============================================================================
 
 
-class CookiePolicy(models.Model):
+class CookiePolicyModel(models.Model):
     """
     Cookie Policy Model
     ===================
@@ -132,5 +132,5 @@ class CookiePolicy(models.Model):
 # =============================================================================
 
 __all__: list[str] = [
-    "CookiePolicy",
+    "CookiePolicyModel",
 ]
