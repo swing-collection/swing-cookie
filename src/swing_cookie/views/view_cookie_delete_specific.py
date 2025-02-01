@@ -23,16 +23,16 @@ class-based views for deleting cookies.
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Function
 # =============================================================================
+
 
 def clear_specific_cookies_view(request: HttpRequest) -> HttpResponse:
     """
@@ -62,16 +62,18 @@ def clear_specific_cookies_view(request: HttpRequest) -> HttpResponse:
 
     return response
 
+
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class ClearSpecificCookiesView(View):
     """
     Clear Specific Cookies View Class
     =================================
 
-    A class-based view that clears cookies based on certain criteria, such as 
+    A class-based view that clears cookies based on certain criteria, such as
     those that start with a specific prefix (e.g., "example_").
 
     Methods:
@@ -114,7 +116,6 @@ class ClearSpecificCookiesView(View):
             response.delete_cookie(cookie)
 
         return response
-
 
 
 # =============================================================================

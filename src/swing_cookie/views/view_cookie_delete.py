@@ -23,16 +23,16 @@ class-based views for deleting cookies.
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Function
 # =============================================================================
+
 
 def cookie_delete_view(request: HttpRequest) -> HttpResponse:
     """
@@ -59,6 +59,7 @@ def cookie_delete_view(request: HttpRequest) -> HttpResponse:
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class CookieDeleteView(View):
     """

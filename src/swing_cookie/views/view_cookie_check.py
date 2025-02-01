@@ -22,16 +22,16 @@ Cookie Set Views Module
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def check_cookie_view(request: HttpRequest) -> HttpResponse:
     """
@@ -61,12 +61,13 @@ def check_cookie_view(request: HttpRequest) -> HttpResponse:
 # Classes
 # =============================================================================
 
+
 class CheckCookieView(View):
     """
     Check Cookie Existence View Class
     =================================
 
-    A class-based view that checks if a specific cookie named "example_cookie" 
+    A class-based view that checks if a specific cookie named "example_cookie"
     exists.
 
     Methods:

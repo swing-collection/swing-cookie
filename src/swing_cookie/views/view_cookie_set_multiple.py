@@ -9,7 +9,7 @@
 Cookie Set Views Module
 =======================
 
-This module contains views for setting cookie values, including both 
+This module contains views for setting cookie values, including both
 function-based and class-based views.
 
 """
@@ -23,16 +23,16 @@ function-based and class-based views.
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Function
 # =============================================================================
+
 
 def set_multiple_cookies_view(request: HttpRequest) -> HttpResponse:
     """
@@ -67,6 +67,7 @@ def set_multiple_cookies_view(request: HttpRequest) -> HttpResponse:
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class SetMultipleCookiesView(View):
     """

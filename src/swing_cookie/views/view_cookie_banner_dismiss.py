@@ -21,25 +21,23 @@ Cookie Delete Views Module
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Function
 # =============================================================================
 
-def dismiss_cookie_banner_view(
-    request: HttpRequest
-) -> HttpResponse:
+
+def dismiss_cookie_banner_view(request: HttpRequest) -> HttpResponse:
     """
     Dismiss Cookie Banner View Function
     ===================================
 
-    Sets a cookie to indicate that the user has dismissed the cookie consent 
+    Sets a cookie to indicate that the user has dismissed the cookie consent
     banner.
 
     Parameters:
@@ -61,12 +59,13 @@ def dismiss_cookie_banner_view(
 # Class
 # =============================================================================
 
+
 class DismissCookieBannerView(View):
     """
     Dismiss Cookie Banner View Class
     ================================
 
-    A class-based view that sets a cookie to indicate that the user has 
+    A class-based view that sets a cookie to indicate that the user has
     dismissed the cookie consent banner.
 
     Methods:
@@ -87,7 +86,7 @@ class DismissCookieBannerView(View):
         **kwargs: Dict[str, Any],
     ) -> HttpResponse:
         """
-        Handles GET requests to set a cookie indicating the banner has been 
+        Handles GET requests to set a cookie indicating the banner has been
         dismissed.
 
         Parameters:
@@ -103,6 +102,7 @@ class DismissCookieBannerView(View):
         response = HttpResponse("Banner Dismissed")
         response.set_cookie("cookie_banner_dismissed", "true")
         return response
+
 
 # =============================================================================
 # Module Exports

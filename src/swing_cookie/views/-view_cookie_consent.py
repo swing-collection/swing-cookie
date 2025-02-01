@@ -1,5 +1,6 @@
-from django.shortcuts import render
 from django.http import JsonResponse
+from django.shortcuts import render
+
 
 def cookie_consent_view(request):
     if request.method == "POST":

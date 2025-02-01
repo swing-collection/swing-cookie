@@ -20,16 +20,16 @@ Cookie Set Views Module
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Function
 # =============================================================================
+
 
 def update_cookie_view(request: HttpRequest) -> HttpResponse:
     """
@@ -59,12 +59,13 @@ def update_cookie_view(request: HttpRequest) -> HttpResponse:
 # Class
 # =============================================================================
 
+
 class UpdateCookieView(View):
     """
     Update Cookie View Class
     ========================
 
-    A class-based view that updates the value of a specific cookie named 
+    A class-based view that updates the value of a specific cookie named
     "example_cookie".
 
     Methods:

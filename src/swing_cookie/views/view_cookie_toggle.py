@@ -23,16 +23,16 @@ class-based views for deleting cookies.
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Function
 # =============================================================================
+
 
 def toggle_cookie_value_view(request: HttpRequest) -> HttpResponse:
     """
@@ -62,12 +62,13 @@ def toggle_cookie_value_view(request: HttpRequest) -> HttpResponse:
 # Class
 # =============================================================================
 
+
 class ToggleCookieValueView(View):
     """
     Toggle Cookie Value View Class
     ==============================
 
-    A class-based view that toggles the value of "toggle_cookie" between "on" 
+    A class-based view that toggles the value of "toggle_cookie" between "on"
     and "off".
 
     Methods:
@@ -88,7 +89,7 @@ class ToggleCookieValueView(View):
         **kwargs: Dict[str, Any],
     ) -> HttpResponse:
         """
-        Handles GET requests to toggle the value of "toggle_cookie" between 
+        Handles GET requests to toggle the value of "toggle_cookie" between
         "on" and "off".
 
         Parameters:
@@ -106,7 +107,6 @@ class ToggleCookieValueView(View):
         response = HttpResponse(f"Cookie toggled to {new_value}")
         response.set_cookie("toggle_cookie", new_value)
         return response
-
 
 
 # =============================================================================

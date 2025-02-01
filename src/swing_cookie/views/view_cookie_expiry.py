@@ -21,16 +21,16 @@ Cookie Delete Views Module
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Function
 # =============================================================================
+
 
 def view_cookie_expiry_view(request: HttpRequest) -> HttpResponse:
     """
@@ -60,12 +60,13 @@ def view_cookie_expiry_view(request: HttpRequest) -> HttpResponse:
 # Class
 # =============================================================================
 
+
 class ViewCookieExpiryView(View):
     """
     View Cookie Expiry Date View Class
     ==================================
 
-    A class-based view that retrieves the expiry date of a specific cookie 
+    A class-based view that retrieves the expiry date of a specific cookie
     named "example_cookie".
 
     Methods:

@@ -9,7 +9,7 @@
 Cookie Retrieval Views Module
 =============================
 
-This module contains views for retrieving cookie values, including both 
+This module contains views for retrieving cookie values, including both
 function-based and class-based views.
 
 """
@@ -23,16 +23,16 @@ function-based and class-based views.
 from typing import Any, Dict, Optional
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def copy_cookie_view(request: HttpRequest) -> HttpResponse:
     """
@@ -63,6 +63,7 @@ def copy_cookie_view(request: HttpRequest) -> HttpResponse:
 # Class
 # =============================================================================
 
+
 class CopyCookieView(View):
     """
     Copy Cookie View Class
@@ -89,7 +90,7 @@ class CopyCookieView(View):
         **kwargs: Dict[str, Any],
     ) -> HttpResponse:
         """
-        Handles GET requests to copy the value of "example_cookie" to a new 
+        Handles GET requests to copy the value of "example_cookie" to a new
         cookie.
 
         Parameters:

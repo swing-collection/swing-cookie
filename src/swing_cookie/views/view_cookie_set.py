@@ -9,7 +9,7 @@
 Cookie Set Views Module
 =======================
 
-This module contains views for setting cookie values, including both 
+This module contains views for setting cookie values, including both
 function-based and class-based views.
 
 """
@@ -23,16 +23,16 @@ function-based and class-based views.
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Function
 # =============================================================================
+
 
 def set_cookie_view(request: HttpRequest) -> HttpResponse:
     """
@@ -59,7 +59,7 @@ def set_cookie_view(request: HttpRequest) -> HttpResponse:
         path="/",
         expires=None,
         secure=False,
-        httponly=True
+        httponly=True,
     )
     cookie.save()
     response.set_cookie(
@@ -69,7 +69,7 @@ def set_cookie_view(request: HttpRequest) -> HttpResponse:
         path=cookie.path,
         expires=cookie.expires,
         secure=cookie.secure,
-        httponly=cookie.httponly
+        httponly=cookie.httponly,
     )
     return response
 
@@ -77,6 +77,7 @@ def set_cookie_view(request: HttpRequest) -> HttpResponse:
 # =============================================================================
 # Class
 # =============================================================================
+
 
 class SetCookieView(View):
     """
@@ -124,7 +125,7 @@ class SetCookieView(View):
             path="/",
             expires=None,
             secure=False,
-            httponly=True
+            httponly=True,
         )
         cookie.save()
         response.set_cookie(
@@ -134,7 +135,7 @@ class SetCookieView(View):
             path=cookie.path,
             expires=cookie.expires,
             secure=cookie.secure,
-            httponly=cookie.httponly
+            httponly=cookie.httponly,
         )
         return response
 

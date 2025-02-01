@@ -1,4 +1,3 @@
-
 class CookieStatusView(View):
     """
     Check the current accept/decline status for cookies.
@@ -13,12 +12,18 @@ class CookieStatusView(View):
     def get(self, request: HttpRequest) -> JsonResponse:
         accepted = get_accepted_cookie_groups(request)
         declined = get_declined_cookie_groups(request)
-        not_accepted_or_declined = get_not_accepted_or_declined_cookie_groups(request)
+        not_accepted_or_declined = get_not_accepted_or_declined_cookie_groups(
+            request
+        )
         # TODO: change this csv URL param into proper POST params
-        varnames = ",".join([group.varname for group in not_accepted_or_declined])
+        varnames = ",".join(
+            [group.varname for group in not_accepted_or_declined]
+        )
         data = {
             "csrftoken": get_csrf_token(request),
-            "acceptUrl": reverse("cookie_consent_accept", kwargs={"varname": varnames}),
+            "acceptUrl": reverse(
+                "cookie_consent_accept", kwargs={"varname": varnames}
+            ),
             "declineUrl": reverse(
                 "cookie_consent_decline", kwargs={"varname": varnames}
             ),

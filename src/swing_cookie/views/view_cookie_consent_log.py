@@ -21,23 +21,23 @@ Cookie Set Views Module
 from typing import Any, Dict
 
 # Import | Libraries
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.views import View
 
 # Import | Local Modules
 from swing_cookie.models.model_cookie import CookieModel
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def log_cookie_consent_view(request: HttpRequest) -> HttpResponse:
     """
     Log Cookie Consent View Function
     ================================
 
-    Logs the user"s cookie consent status and sets a cookie to indicate that 
+    Logs the user"s cookie consent status and sets a cookie to indicate that
     consent was given.
 
     Parameters:
@@ -61,12 +61,13 @@ def log_cookie_consent_view(request: HttpRequest) -> HttpResponse:
 # Classes
 # =============================================================================
 
+
 class LogCookieConsentView(View):
     """
     Log Cookie Consent View Class
     =============================
 
-    A class-based view that logs the user"s cookie consent status and sets a 
+    A class-based view that logs the user"s cookie consent status and sets a
     cookie to indicate that consent was given.
 
     Methods:
@@ -87,7 +88,7 @@ class LogCookieConsentView(View):
         **kwargs: Dict[str, Any],
     ) -> HttpResponse:
         """
-        Handles GET requests to log the user"s cookie consent status and set a 
+        Handles GET requests to log the user"s cookie consent status and set a
         corresponding cookie.
 
         Parameters:
