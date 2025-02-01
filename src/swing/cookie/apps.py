@@ -1,23 +1,37 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Consent App Configuration
 =================================
 
-This module contains the configuration settings for the Cookie Consent Django app.
+This module contains the configuration settings for the Swing Cookie
+Django app.
+
 """
 
 # =============================================================================
 # Imports
 # =============================================================================
 
+# Import | Standard Library
+from typing import Any, Dict, Optional
+
+# Import | Libraries
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
+
+# Import | Local Modules
 
 
 # =============================================================================
 # App Configuration
 # =============================================================================
+
 
 class CookieConfig(AppConfig):
     """
@@ -35,11 +49,12 @@ class CookieConfig(AppConfig):
         The human-readable name of the app, used in the Django admin.
     default_auto_field : str
         The default field type for primary keys in models.
+
     """
 
     name = "swing_cookie"
-    verbose_name = _("Swing Cookie")
-    default_auto_field = "django.db.models.AutoField"
+    verbose_name: str = _("Swing Cookie")
+    default_auto_field: str = "django.db.models.AutoField"
 
     def ready(self) -> None:
         """
@@ -52,14 +67,17 @@ class CookieConfig(AppConfig):
         Returns:
         --------
         None
+
         """
-        import cookie_consent.signals  # Ensure signals are registered when the app is loaded
+
+        # Ensure signals are registered when the app is loaded
+        import cookie_consent.signals
 
 
 # =============================================================================
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: list[str] = [
     "CookieConfig",
 ]
