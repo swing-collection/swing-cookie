@@ -27,7 +27,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 # Import | Local
-from .models import CookieGroup
+from .model_cookie_group import CookieGroupModel
 from .utils import clear_cache_after  # Assuming a decorator for cache clearing
 
 # from .managers import CookieManager  # Assuming you have a custom manager
@@ -76,26 +76,28 @@ class CookieModel(models.Model):
     # objects = CookieManager()
 
     cookiegroup = models.ForeignKey(
-        CookieGroup,
-        verbose_name=_(message="Cookie Group"),
+        CookieGroupModel,
+        verbose_name=_("Cookie Group"),
         on_delete=models.CASCADE,
         related_name="cookies",
-        help_text=_(message="The group to which this cookie belongs."),
+        help_text=_("The group to which this cookie belongs."),
     )
 
     name = models.CharField(
-        _(message="Name"),
+        _("Name"),
         max_length=255,
-        help_text=_(message="The name of the cookie."),
+        help_text=_("The name of the cookie."),
     )
 
     description = models.TextField(
-        _(message="Description"),
+        _("Description"),
         blank=True,
+        null=True,
+        help_text=_("A brief description of the cookie's purpose."),
     )
 
     domain = models.CharField(
-        _(message="Domain"),
+        _("Domain"),
         max_length=255,
         blank=True,
         null=True,
@@ -103,47 +105,50 @@ class CookieModel(models.Model):
     )
 
     path = models.CharField(
-        _(message="Path"),
-        blank=True,
+        _("Path"),
         max_length=255,
         default="/",
-        help_text=_(message="The path for which the cookie is valid."),
+        help_text=_("The path for which the cookie is valid."),
     )
 
     value = models.TextField(
-        help_text=_(message="The value of the cookie."),
+        _("Value"),
+        help_text=_("The value stored in the cookie."),
     )
 
     expires = models.DateTimeField(
+        _("Expiration Date"),
         blank=True,
         null=True,
-        help_text=_(message="The expiration date and time of the cookie."),
+        help_text=_("The expiration date and time of the cookie."),
     )
 
     secure = models.BooleanField(
+        _("Secure"),
         default=False,
         help_text=_(
-            message="Indicates whether the cookie is secure (sent only over HTTPS)."
+            "Indicates whether the cookie is secure (sent only over HTTPS)."
         ),
     )
 
     httponly = models.BooleanField(
+        _("HTTPOnly"),
         default=False,
         help_text=_(
-            message="Indicates whether the cookie is HTTPOnly (not accessible via JavaScript)."
+            "Indicates whether the cookie is HTTPOnly (not accessible via JavaScript)."
         ),
     )
 
     created_at = models.DateTimeField(
-        _(message="Created"),
+        _("Created At"),
         auto_now_add=True,
-        blank=True,
-        help_text=_(message="The timestamp when the cookie was created."),
+        help_text=_("The timestamp when the cookie was created."),
     )
 
     updated_at = models.DateTimeField(
+        _("Updated At"),
         auto_now=True,
-        help_text=_(message="The timestamp when the cookie was last updated."),
+        help_text=_("The timestamp when the cookie was last updated."),
     )
 
     class Meta:
@@ -155,61 +160,105 @@ class CookieModel(models.Model):
         constraints.
         """
 
-        verbose_name: str = _(message="Cookie")
-        verbose_name_plural: str = _(message="Cookies")
+        verbose_name = _("Cookie")
+        verbose_name_plural = _("Cookies")
         constraints = [
             models.UniqueConstraint(
-                fields=("name", "domain", "path"),
+                fields=(
+                    "cookiegroup",
+                    "name",
+                    "domain",
+                ),
                 name="unique_cookie_constraint",
-                # fields=("cookiegroup", "name", "domain"),
-                # name="natural_key",
             ),
         ]
-        ordering: list[str] = ["-created_at"]
+        ordering: list[str] = [
+            "-created_at",
+        ]
 
     def __str__(self) -> str:
         """
-        String Representation
-        ---------------------
-
-        Returns the string representation of the cookie, typically its name.
+        Returns a string representation of the cookie.
 
         Returns:
         --------
         str
-            The name of the cookie.
+            A human-readable name of the cookie.
         """
-        name = str(object=self.name)
-        return name
-        # return "%s %s%s" % (self.name, self.domain, self.path)
+        return f"{self.name} ({self.domain or 'No Domain'})"
 
     @clear_cache_after
-    def save(
-        self,
-        *args,
-        **kwargs,
-    ) -> None:
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        """
+        Overrides the save method to clear the cache after saving.
+
+        Parameters:
+        -----------
+        *args : Any
+            Variable length argument list.
+        **kwargs : Any
+            Arbitrary keyword arguments.
+
+        Returns:
+        --------
+        None
+        """
         super().save(*args, **kwargs)
 
     @clear_cache_after
-    def delete(
-        self,
-        *args,
-        **kwargs,
-    ) -> tuple[int, dict[str, int]]:
+    def delete(self, *args: Any, **kwargs: Any) -> tuple[int, dict[str, int]]:
+        """
+        Overrides the delete method to clear the cache after deleting.
+
+        Parameters:
+        -----------
+        *args : Any
+            Variable length argument list.
+        **kwargs : Any
+            Arbitrary keyword arguments.
+
+        Returns:
+        --------
+        tuple[int, dict[str, int]]
+            The number of rows deleted and a dictionary with details.
+        """
         return super().delete(*args, **kwargs)
 
-    def natural_key(self):  # -> Any:
+    def natural_key(self) -> tuple[str, Optional[str]]:
+        """
+        Returns a natural key that uniquely identifies the cookie.
+
+        Returns:
+        --------
+        tuple[str, Optional[str]]
+            A tuple containing the cookie name and domain.
+        """
         return (self.name, self.domain) + self.cookiegroup.natural_key()
 
     natural_key.dependencies = ["cookie_consent.cookiegroup"]
 
     @property
     def varname(self) -> str:
-        return "%s=%s:%s" % (self.cookiegroup.varname, self.name, self.domain)
+        """
+        Returns a variable name representation of the cookie.
 
-    def get_version(self):  # -> Any:
-        return self.created.isoformat()
+        Returns:
+        --------
+        str
+            A formatted variable name including group and domain.
+        """
+        return f"{self.cookiegroup.varname}={self.name}:{self.domain or 'No Domain'}"
+
+    def get_version(self) -> str:
+        """
+        Returns the creation timestamp as a version identifier.
+
+        Returns:
+        --------
+        str
+            The ISO formatted timestamp.
+        """
+        return self.created_at.isoformat()
 
 
 # =============================================================================
