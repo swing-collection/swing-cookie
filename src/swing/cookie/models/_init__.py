@@ -41,7 +41,7 @@ from .model_cookie_policy import CookiePolicyModel
 
 __all__: list[str] = [
     "CookieModel",
-    "CookieGroupModel",
     "CookieConsentModel",
+    "CookieGroupModel",
     "CookiePolicyModel",
 ]
