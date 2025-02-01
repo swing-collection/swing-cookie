@@ -5,10 +5,13 @@
 # Docstring
 # =============================================================================
 
+
 """
 Cookie Policy Model Module
-===================
+==========================
 
+This module provides the `CookiePolicy` model, which defines the cookie
+policy for the website, including its version, content, and timestamps.
 
 """
 
@@ -18,6 +21,7 @@ Cookie Policy Model Module
 # =============================================================================
 
 # Import | Standard Library
+from typing import Any
 
 # Import | Libraries
 from django.db import models
@@ -36,8 +40,8 @@ class CookiePolicy(models.Model):
     Cookie Policy Model
     ===================
 
-    Defines the cookie policy for the website, including the version and text
-    of the policy.
+    Defines the cookie policy for the website, including the version and
+    content of the policy.
 
     Attributes:
     -----------
@@ -49,25 +53,28 @@ class CookiePolicy(models.Model):
         The timestamp when the policy was created.
     updated_at : datetime
         The timestamp when the policy was last updated.
-
     """
 
     version = models.CharField(
+        _("Version"),
         max_length=50,
         unique=True,
         help_text=_("The version of the cookie policy."),
     )
 
     content = models.TextField(
-        help_text=_("The content of the cookie policy.")
+        _("Content"),
+        help_text=_("The content of the cookie policy."),
     )
 
     created_at = models.DateTimeField(
+        _("Created At"),
         auto_now_add=True,
         help_text=_("The timestamp when the policy was created."),
     )
 
     updated_at = models.DateTimeField(
+        _("Updated At"),
         auto_now=True,
         help_text=_("The timestamp when the policy was last updated."),
     )
@@ -77,7 +84,7 @@ class CookiePolicy(models.Model):
         Meta Class
         ----------
 
-        Provides metadata for the CookiePolicy model.
+        Provides metadata for the `CookiePolicy` model.
         """
 
         verbose_name = _("Cookie Policy")
@@ -86,10 +93,7 @@ class CookiePolicy(models.Model):
 
     def __str__(self) -> str:
         """
-        String Representation
-        ---------------------
-
-        Returns the string representation of the cookie policy, typically the
+        Returns a string representation of the cookie policy, typically its
         version.
 
         Returns:
@@ -98,3 +102,35 @@ class CookiePolicy(models.Model):
             The version of the cookie policy.
         """
         return f"Cookie Policy v{self.version}"
+
+    def save(
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Overrides the save method to enforce consistent formatting
+        for the version field.
+
+        Parameters:
+        -----------
+        *args : Any
+            Variable-length argument list.
+        **kwargs : Any
+            Arbitrary keyword arguments.
+
+        Returns:
+        --------
+        None
+        """
+        self.version = self.version.strip().upper()  # Ensures consistency
+        super().save(*args, **kwargs)
+
+
+# =============================================================================
+# Module Exports
+# =============================================================================
+
+__all__: list[str] = [
+    "CookiePolicy",
+]
