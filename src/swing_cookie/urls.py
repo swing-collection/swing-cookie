@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from django.urls import path
-from .views import set_cookie_view, get_cookie_view, delete_cookie_view
+
+from .views import delete_cookie_view, get_cookie_view, set_cookie_view
 
 urlpatterns = [
-    path('set-cookie/', set_cookie_view, name='set_cookie_view'),
-    path('get-cookie/', get_cookie_view, name='get_cookie_view'),
-    path('delete-cookie/', delete_cookie_view, name='delete_cookie_view'),
+    path("set-cookie/", set_cookie_view, name="set_cookie_view"),
+    path("get-cookie/", get_cookie_view, name="get_cookie_view"),
+    path("delete-cookie/", delete_cookie_view, name="delete_cookie_view"),
 ]
-
-
 
 
 from django.urls import path, re_path
@@ -46,5 +45,9 @@ urlpatterns = [
         name="cookie_consent_decline_all",
     ),
     path("status/", CookieStatusView.as_view(), name="cookie_consent_status"),
-    path("", CookieGroupListView.as_view(), name="cookie_consent_cookie_group_list"),
+    path(
+        "",
+        CookieGroupListView.as_view(),
+        name="cookie_consent_cookie_group_list",
+    ),
 ]
