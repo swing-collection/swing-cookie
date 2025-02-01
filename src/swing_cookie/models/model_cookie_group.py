@@ -31,12 +31,13 @@ from django.utils.translation import gettext_lazy as _
 # Class
 # =============================================================================
 
+
 class CookieGroupModel(models.Model):
     """
     Cookie Group Model
     ==================
 
-    Groups cookies into different categories, such as "necessary," 
+    Groups cookies into different categories, such as "necessary,"
     "analytics," and "marketing."
 
     Attributes:
@@ -51,11 +52,27 @@ class CookieGroupModel(models.Model):
         The timestamp when the group was last updated.
     """
 
-    name = models.CharField(max_length=255, unique=True, help_text=_("The name of the cookie group (e.g., 'Necessary', 'Analytics')."))
-    description = models.TextField(blank=True, null=True, help_text=_("A brief description of the cookie group."))
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        help_text=_(
+            "The name of the cookie group (e.g., 'Necessary', 'Analytics')."
+        ),
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        help_text=_("A brief description of the cookie group."),
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True, help_text=_("The timestamp when the group was created."))
-    updated_at = models.DateTimeField(auto_now=True, help_text=_("The timestamp when the group was last updated."))
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text=_("The timestamp when the group was created."),
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text=_("The timestamp when the group was last updated."),
+    )
 
     class Meta:
         """
@@ -64,6 +81,7 @@ class CookieGroupModel(models.Model):
 
         Provides metadata for the CookieGroup model.
         """
+
         verbose_name = _("Cookie Group")
         verbose_name_plural = _("Cookie Groups")
         ordering = ["name"]

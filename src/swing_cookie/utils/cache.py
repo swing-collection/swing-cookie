@@ -25,7 +25,9 @@ def delete_cache():
 
 
 def _get_cookie_groups_from_db():
-    qs = CookieGroup.objects.filter(is_required=False).prefetch_related("cookie_set")
+    qs = CookieGroup.objects.filter(is_required=False).prefetch_related(
+        "cookie_set"
+    )
     return qs.in_bulk(field_name="varname")
 
 

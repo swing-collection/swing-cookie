@@ -135,7 +135,8 @@ def _get_cookie_groups_by_state(request, state: Union[bool, None]):
     return [
         cookie_group
         for cookie_group in get_cookie_groups()
-        if get_cookie_value_from_request(request, cookie_group.varname) is state
+        if get_cookie_value_from_request(request, cookie_group.varname)
+        is state
     ]
 
 

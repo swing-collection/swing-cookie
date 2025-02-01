@@ -89,7 +89,9 @@ def cookie_consent_decline_url(cookie_groups):
 
 
 @register.simple_tag
-def get_accept_cookie_groups_cookie_string(request, cookie_groups):  # pragma: no cover
+def get_accept_cookie_groups_cookie_string(
+    request, cookie_groups
+):  # pragma: no cover
     """
     Tag returns accept cookie string suitable to use in javascript.
     """

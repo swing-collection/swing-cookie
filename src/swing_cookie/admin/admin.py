@@ -6,14 +6,32 @@ from .models import Cookie, CookieGroup, LogItem
 
 
 class CookieAdmin(admin.ModelAdmin):
-    list_display = ("varname", "name", "cookiegroup", "path", "domain", "get_version")
-    search_fields = ("name", "domain", "cookiegroup__varname", "cookiegroup__name")
+    list_display = (
+        "varname",
+        "name",
+        "cookiegroup",
+        "path",
+        "domain",
+        "get_version",
+    )
+    search_fields = (
+        "name",
+        "domain",
+        "cookiegroup__varname",
+        "cookiegroup__name",
+    )
     readonly_fields = ("varname",)
     list_filter = ("cookiegroup",)
 
 
 class CookieGroupAdmin(admin.ModelAdmin):
-    list_display = ("varname", "name", "is_required", "is_deletable", "get_version")
+    list_display = (
+        "varname",
+        "name",
+        "is_required",
+        "is_deletable",
+        "get_version",
+    )
     search_fields = (
         "varname",
         "name",
