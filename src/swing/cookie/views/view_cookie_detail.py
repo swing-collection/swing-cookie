@@ -6,7 +6,7 @@
 # =============================================================================
 
 """
-Cookie Delete Views Module
+Cookie Detail Views Module
 ==========================
 
 This module provides views to retrieve detailed information about cookies
