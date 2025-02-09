@@ -10,7 +10,6 @@ Cookie Set Views Module
 =======================
 
 
-
 """
 
 # =============================================================================
@@ -18,7 +17,7 @@ Cookie Set Views Module
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -50,10 +49,13 @@ def log_cookie_consent_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object indicating that the consent has been logged.
     """
-    response = HttpResponse("Consent Logged")
+    response = HttpResponse(content="Consent Logged")
     # Example of consent being passed as a GET parameter
-    consent_status = request.GET.get("consent", "false")
-    response.set_cookie("cookie_consent", consent_status)
+    consent_status: str = request.GET.get("consent", "false")
+    response.set_cookie(
+        key="cookie_consent",
+        value=consent_status,
+    )
     return response
 
 
@@ -101,9 +103,12 @@ class LogCookieConsentView(View):
         HttpResponse
             The response object indicating that the consent has been logged.
         """
-        response = HttpResponse("Consent Logged")
-        consent_status = request.GET.get("consent", "false")
-        response.set_cookie("cookie_consent", consent_status)
+        response = HttpResponse(content="Consent Logged")
+        consent_status: str = request.GET.get("consent", "false")
+        response.set_cookie(
+            key="cookie_consent",
+            value=consent_status,
+        )
         return response
 
 
@@ -111,7 +116,7 @@ class LogCookieConsentView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "log_cookie_consent_view",
     "LogCookieConsentView",
 ]
