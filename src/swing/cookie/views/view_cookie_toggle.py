@@ -20,7 +20,7 @@ class-based views for deleting cookies.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -54,10 +54,10 @@ def toggle_cookie_value_view(
         The response object indicating that the cookie value has been toggled.
 
     """
-    current_value = request.COOKIES.get("toggle_cookie", "off")
+    current_value: str = request.COOKIES.get("toggle_cookie", "off")
     new_value = "on" if current_value == "off" else "off"
-    response = HttpResponse(f"Cookie toggled to {new_value}")
-    response.set_cookie("toggle_cookie", new_value)
+    response = HttpResponse(content=f"Cookie toggled to {new_value}")
+    response.set_cookie(key="toggle_cookie", value=new_value)
     return response
 
 
@@ -106,10 +106,10 @@ class ToggleCookieValueView(View):
         HttpResponse
             The response object indicating that the cookie value has been toggled.
         """
-        current_value = request.COOKIES.get("toggle_cookie", "off")
+        current_value: str = request.COOKIES.get("toggle_cookie", "off")
         new_value = "on" if current_value == "off" else "off"
-        response = HttpResponse(f"Cookie toggled to {new_value}")
-        response.set_cookie("toggle_cookie", new_value)
+        response = HttpResponse(content=f"Cookie toggled to {new_value}")
+        response.set_cookie(key="toggle_cookie", value=new_value)
         return response
 
 
@@ -117,7 +117,7 @@ class ToggleCookieValueView(View):
 # Module Exports
 # =============================================================================
 
-__all__: list[str] = [
+__all__: List[str] = [
     "toggle_cookie_value_view",
     "ToggleCookieValueView",
 ]
