@@ -20,7 +20,7 @@ class-based views for deleting cookies.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -51,8 +51,8 @@ def cookie_delete_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object indicating that the cookie has been deleted.
     """
-    response = HttpResponse("Cookie Deleted")
-    response.delete_cookie("example_cookie")
+    response = HttpResponse(content="Cookie Deleted")
+    response.delete_cookie(key="example_cookie")
     return response
 
 
@@ -98,8 +98,8 @@ class CookieDeleteView(View):
         HttpResponse
             The response object indicating that the cookie has been deleted.
         """
-        response = HttpResponse("Cookie Deleted")
-        response.delete_cookie("example_cookie")
+        response = HttpResponse(content="Cookie Deleted")
+        response.delete_cookie(key="example_cookie")
         return response
 
 
@@ -107,7 +107,7 @@ class CookieDeleteView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "cookie_delete_view",
     "CookieDeleteView",
 ]
