@@ -6,7 +6,7 @@
 # =============================================================================
 
 """
-Cookie Consent App Configuration
+Swing Cookie Config App Configuration
 =================================
 
 This module contains the configuration settings for the Swing Cookie
@@ -33,7 +33,7 @@ from django.utils.translation import gettext_lazy as _
 # =============================================================================
 
 
-class CookieConfig(AppConfig):
+class SwingCookieConfig(AppConfig):
     """
     Cookie Consent App Configuration
     =================================
@@ -52,26 +52,26 @@ class CookieConfig(AppConfig):
 
     """
 
-    name = "swing_cookie"
+    name = "swing.cookie"
     verbose_name: str = _(message="Swing Cookie")
     default_auto_field: str = "django.db.models.AutoField"
 
-    def ready(self) -> None:
-        """
-        Ready Method
-        ============
+    # def ready(self) -> None:
+    #     """
+    #     Ready Method
+    #     ============
 
-        This method is executed when the Django app is ready. It can be used
-        to import signals, register tasks, or perform other setup actions.
+    #     This method is executed when the Django app is ready. It can be used
+    #     to import signals, register tasks, or perform other setup actions.
 
-        Returns:
-        --------
-        None
+    #     Returns:
+    #     --------
+    #     None
 
-        """
+    #     """
 
-        # Ensure signals are registered when the app is loaded
-        import cookie_consent.signals
+    #     # Ensure signals are registered when the app is loaded
+    #     import swing.cookie.signals
 
 
 # =============================================================================
