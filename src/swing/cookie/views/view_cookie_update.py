@@ -17,7 +17,7 @@ Cookie Set Views Module
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -48,10 +48,10 @@ def update_cookie_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object indicating that the cookie has been updated.
     """
-    response = HttpResponse("Cookie Updated")
+    response = HttpResponse(content="Cookie Updated")
     # This value can be dynamic or retrieved from request data
     new_value = "updated_value"
-    response.set_cookie("example_cookie", new_value)
+    response.set_cookie(key="example_cookie", value=new_value)
     return response
 
 
@@ -98,9 +98,9 @@ class UpdateCookieView(View):
         HttpResponse
             The response object indicating that the cookie has been updated.
         """
-        response = HttpResponse("Cookie Updated")
+        response = HttpResponse(content="Cookie Updated")
         new_value = "updated_value"
-        response.set_cookie("example_cookie", new_value)
+        response.set_cookie(key="example_cookie", value=new_value)
         return response
 
 
@@ -108,7 +108,7 @@ class UpdateCookieView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "update_cookie_view",
     "UpdateCookieView",
 ]
