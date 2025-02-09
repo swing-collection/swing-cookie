@@ -20,7 +20,7 @@ class-based views for deleting cookies.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -51,9 +51,9 @@ def clear_specific_cookies_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object indicating that the specific cookies have been cleared.
     """
-    response = HttpResponse("Specific Cookies Cleared")
+    response = HttpResponse(content="Specific Cookies Cleared")
     prefix = "example_"
-    cookies_to_clear = [
+    cookies_to_clear: List[str] = [
         cookie for cookie in request.COOKIES if cookie.startswith(prefix)
     ]
 
@@ -106,14 +106,14 @@ class ClearSpecificCookiesView(View):
         HttpResponse
             The response object indicating that the specific cookies have been cleared.
         """
-        response = HttpResponse("Specific Cookies Cleared")
+        response = HttpResponse(content="Specific Cookies Cleared")
         prefix = "example_"
-        cookies_to_clear = [
+        cookies_to_clear: List[str] = [
             cookie for cookie in request.COOKIES if cookie.startswith(prefix)
         ]
 
         for cookie in cookies_to_clear:
-            response.delete_cookie(cookie)
+            response.delete_cookie(key=cookie)
 
         return response
 
@@ -122,7 +122,7 @@ class ClearSpecificCookiesView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "clear_specific_cookies_view",
     "ClearSpecificCookiesView",
 ]
