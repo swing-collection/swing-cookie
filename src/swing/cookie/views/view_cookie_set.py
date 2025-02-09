@@ -20,7 +20,7 @@ function-based and class-based views.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -51,8 +51,8 @@ def set_cookie_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object indicating that the cookie has been set.
     """
-    response = HttpResponse("Cookie Set")
-    cookie = Cookie(
+    response = HttpResponse(content="Cookie Set")
+    cookie = CookieModel(
         name="example_cookie",
         value="example_value",
         domain=request.get_host(),
@@ -117,7 +117,7 @@ class SetCookieView(View):
         HttpResponse
             The response object indicating that the cookie has been set.
         """
-        response = HttpResponse("Cookie Set")
+        response = HttpResponse(content="Cookie Set")
         cookie = CookieModel(
             name="example_cookie",
             value="example_value",
@@ -144,7 +144,7 @@ class SetCookieView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "set_cookie_view",
     "SetCookieView",
 ]
