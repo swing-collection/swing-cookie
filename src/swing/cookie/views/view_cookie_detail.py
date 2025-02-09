@@ -25,7 +25,7 @@ It includes:
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Libraries
 from django.http import HttpRequest, HttpResponse
@@ -78,7 +78,7 @@ def view_cookie_details_view(
 
     except CookieModel.DoesNotExist:
         return HttpResponse(
-            content=_("Cookie not found"),
+            content=_(message="Cookie not found"),
             status=404,
         )
 
@@ -145,7 +145,7 @@ class ViewCookieDetailsView(View):
 
         except CookieModel.DoesNotExist:
             return HttpResponse(
-                content=_("Cookie not found"),
+                content=_(message="Cookie not found"),
                 status=404,
             )
 
@@ -154,7 +154,7 @@ class ViewCookieDetailsView(View):
 # Module Exports
 # =============================================================================
 
-__all__: list[str] = [
+__all__: List[str] = [
     "view_cookie_details_view",
     "ViewCookieDetailsView",
 ]
