@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
-from typing import Union
+from typing import Any, List, Union
 
 from .cache import all_cookie_groups, get_cookie, get_cookie_group
 from .conf import settings
@@ -8,6 +8,12 @@ from .models import ACTION_ACCEPTED, ACTION_DECLINED, LogItem
 
 
 def parse_cookie_str(cookie):
+    """ "Docstring for parse_cookie_str
+
+    :param cookie: Description
+    :type cookie:
+    :return: Description
+    :rtype: dict"""
     dic = {}
     if not cookie:
         return dic
@@ -18,15 +24,18 @@ def parse_cookie_str(cookie):
 
 
 def dict_to_cookie_str(dic):
+    """ """
     return "|".join(["%s=%s" % (k, v) for k, v in dic.items() if v])
 
 
 def get_cookie_dict_from_request(request):
+    """ """
     cookie_str = request.COOKIES.get(settings.COOKIE_CONSENT_NAME)
     return parse_cookie_str(cookie_str)
 
 
-def set_cookie_dict_to_response(response, dic):
+def set_cookie_dict_to_response(response, dic) -> None:
+    """ """
     response.set_cookie(
         settings.COOKIE_CONSENT_NAME,
         dict_to_cookie_str(dic),
@@ -38,7 +47,11 @@ def set_cookie_dict_to_response(response, dic):
     )
 
 
-def get_cookie_value_from_request(request, varname, cookie=None):
+def get_cookie_value_from_request(
+    request,
+    varname,
+    cookie=None,
+) -> None | bool:
     """
     Returns if cookie group or its specific cookie has been accepted.
 
@@ -54,7 +67,11 @@ def get_cookie_value_from_request(request, varname, cookie=None):
         return None
     if cookie:
         name, domain = cookie.split(":")
-        cookie = get_cookie(cookie_group, name, domain)
+        cookie = get_cookie(
+            cookie_group=cookie_group,
+            name=name,
+            domain=domain,
+        )
     else:
         cookie = None
 
@@ -74,17 +91,22 @@ def get_cookie_value_from_request(request, varname, cookie=None):
 
 
 def get_cookie_groups(varname=None):
+    """ """
     if not varname:
         return all_cookie_groups().values()
     keys = varname.split(",")
     return [g for k, g in all_cookie_groups().items() if k in keys]
 
 
-def accept_cookies(request, response, varname=None):
+def accept_cookies(
+    request,
+    response,
+    varname=None,
+) -> None:
     """
     Accept cookies in Cookie Group specified by ``varname``.
     """
-    cookie_dic = get_cookie_dict_from_request(request)
+    cookie_dic = get_cookie_dict_from_request(request=request)
     for cookie_group in get_cookie_groups(varname):
         cookie_dic[cookie_group.varname] = cookie_group.get_version()
         if settings.COOKIE_CONSENT_LOG_ENABLED:
@@ -93,16 +115,21 @@ def accept_cookies(request, response, varname=None):
                 cookiegroup=cookie_group,
                 version=cookie_group.get_version(),
             )
-    set_cookie_dict_to_response(response, cookie_dic)
+    set_cookie_dict_to_response(response=response, dic=cookie_dic)
 
 
-def delete_cookies(response, cookie_group):
+def delete_cookies(response, cookie_group) -> None:
+    """ """
     if cookie_group.is_deletable:
         for cookie in cookie_group.cookie_set.all():
             response.delete_cookie(cookie.name, cookie.path, cookie.domain)
 
 
-def decline_cookies(request, response, varname=None):
+def decline_cookies(
+    request,
+    response,
+    varname=None,
+) -> None:
     """
     Decline and delete cookies in CookieGroup specified by ``varname``.
     """
@@ -119,7 +146,7 @@ def decline_cookies(request, response, varname=None):
     set_cookie_dict_to_response(response, cookie_dic)
 
 
-def are_all_cookies_accepted(request):
+def are_all_cookies_accepted(request) -> bool:
     """
     Returns if all cookies are accepted.
     """
@@ -131,34 +158,47 @@ def are_all_cookies_accepted(request):
     )
 
 
-def _get_cookie_groups_by_state(request, state: Union[bool, None]):
+def _get_cookie_groups_by_state(
+    request,
+    state: Union[bool, None],
+) -> List[Any]:
+    """ """
     return [
         cookie_group
         for cookie_group in get_cookie_groups()
-        if get_cookie_value_from_request(request, cookie_group.varname)
+        if get_cookie_value_from_request(
+            request=request,
+            varname=cookie_group.varname,
+        )
         is state
     ]
 
 
-def get_not_accepted_or_declined_cookie_groups(request):
+def get_not_accepted_or_declined_cookie_groups(request) -> List[Any]:
     """
     Returns all cookie groups that are neither accepted or declined.
     """
     return _get_cookie_groups_by_state(request, state=None)
 
 
-def get_accepted_cookie_groups(request):
+def get_accepted_cookie_groups(request) -> List[Any]:
     """
     Returns all cookie groups that are accepted.
     """
-    return _get_cookie_groups_by_state(request, state=True)
+    return _get_cookie_groups_by_state(
+        request=request,
+        state=True,
+    )
 
 
-def get_declined_cookie_groups(request):
+def get_declined_cookie_groups(request) -> List[Any]:
     """
     Returns all cookie groups that are declined.
     """
-    return _get_cookie_groups_by_state(request, state=False)
+    return _get_cookie_groups_by_state(
+        request=request,
+        state=False,
+    )
 
 
 def is_cookie_consent_enabled(request):
@@ -172,7 +212,7 @@ def is_cookie_consent_enabled(request):
         return enabled
 
 
-def get_cookie_string(cookie_dic):
+def get_cookie_string(cookie_dic) -> str:
     """
     Returns cookie in format suitable for use in javascript.
     """
