@@ -414,7 +414,7 @@
     // ...
 
     "workbench.editor.enablePreview": false, // Disable preview mode for editors to keep files open
-    "workbench.colorTheme": "Default Dark+", // Set the color theme to Default Dark+
+    "workbench.colorTheme": "Dracula Theme", // Set the color theme to Default Dark+
     "workbench.iconTheme": "vscode-icons", // Use vscode-icons for file icons
 
     // ...
@@ -432,15 +432,6 @@
     "window.titleSeparator": " — ",
     "window.zoomLevel": -1,
     "window.zoomPerWindow": true,
-
-    // ========================================================================
-    // Features
-    // ========================================================================
-
-    // Accessibility Signals
-    // ========================================================================
-
-    "accessibility.signalOptions.debouncePositionChanges": false,
 
     // ...
 
@@ -741,5 +732,38 @@
         "refactor": "Hint",
         "warning": "Warning",
         "info": "Information"
-    }
+    },
+
+    "tinymist.compileStatus": "enable",
+    "tinymist.completion.postfix": true,
+    "tinymist.completion.postfixUfcs": true,
+    "tinymist.completion.postfixUfcsLeft": true,
+    "tinymist.completion.postfixUfcsRight": true,
+    "tinymist.completion.triggerOnSnippetPlaceholders": false,
+    "tinymist.configureDefaultWordSeparator": "enable",
+    "tinymist.dragAndDrop": "enable",
+    "tinymist.exportPdf": "onSave",
+    "tinymist.fontPaths": ["typ/assets/font"],
+    "tinymist.formatterMode": "typstyle",
+    "tinymist.formatterPrintWidth": 79,
+    "tinymist.onEnterEvent": true,
+    // "tinymist.outputPath": "",
+    "tinymist.preview.cursorIndicator": true,
+    "tinymist.preview.invertColors": null,
+    "tinymist.preview.partialRendering": true,
+    "tinymist.preview.refresh": "onType",
+    "tinymist.preview.scrollSync": "onSelectionChangeByMouse",
+    "tinymist.previewFeature": "enable",
+    "tinymist.renderDocs": "enable",
+    // "tinymist.rootPath": "",
+    "tinymist.semanticTokens": "disable",
+    // "tinymist.serverPath": "",
+    // "tinymist.showExportFileIn": null,
+    // "tinymist.systemFonts": false,
+    "tinymist.trace.server": "off",
+    "tinymist.typingContinueCommentsOnNewline": true,
+    "makefile.configureOnOpen": true
+    // "tinymist.typstExtraArgs": [
+    //     ""
+    // ],
 }
