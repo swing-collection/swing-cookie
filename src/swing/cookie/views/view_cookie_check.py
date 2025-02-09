@@ -100,11 +100,11 @@ class CheckCookieView(View):
         HttpResponse
             The response object indicating whether the cookie exists or not.
         """
-        cookie_exists = "example_cookie" in request.COOKIES
+        cookie_exists: bool = "example_cookie" in request.COOKIES
         if cookie_exists:
-            return HttpResponse("Cookie exists")
+            return HttpResponse(content="Cookie exists")
         else:
-            return HttpResponse("Cookie does not exist")
+            return HttpResponse(content="Cookie does not exist")
 
 
 # =============================================================================
