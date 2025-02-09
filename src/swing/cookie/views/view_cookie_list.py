@@ -18,7 +18,7 @@ Cookie Set Views Module
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -49,8 +49,8 @@ def list_cookies_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object containing a list of all cookies and their values.
     """
-    cookies = request.COOKIES
-    cookies_list = ", ".join(
+    cookies: Dict[str, str] = request.COOKIES
+    cookies_list: str = ", ".join(
         [f"{key}: {value}" for key, value in cookies.items()]
     )
     return HttpResponse(f"Cookies: {cookies_list}")
@@ -98,18 +98,18 @@ class ListCookiesView(View):
         HttpResponse
             The response object containing a list of all cookies and their values.
         """
-        cookies = request.COOKIES
-        cookies_list = ", ".join(
+        cookies: Dict[str, str] = request.COOKIES
+        cookies_list: str = ", ".join(
             [f"{key}: {value}" for key, value in cookies.items()]
         )
-        return HttpResponse(f"Cookies: {cookies_list}")
+        return HttpResponse(content=f"Cookies: {cookies_list}")
 
 
 # =============================================================================
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "list_cookies_view",
     "ListCookiesView",
 ]
