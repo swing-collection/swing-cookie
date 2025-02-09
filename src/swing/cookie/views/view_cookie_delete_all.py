@@ -18,7 +18,7 @@ Cookie Delete Views Module
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -49,9 +49,9 @@ def delete_all_cookies_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object indicating that all cookies have been deleted.
     """
-    response = HttpResponse("All Cookies Deleted")
+    response = HttpResponse(content="All Cookies Deleted")
     for cookie in request.COOKIES:
-        response.delete_cookie(cookie)
+        response.delete_cookie(key=cookie)
     return response
 
 
@@ -97,9 +97,9 @@ class DeleteAllCookiesView(View):
         HttpResponse
             The response object indicating that all cookies have been deleted.
         """
-        response = HttpResponse("All Cookies Deleted")
+        response = HttpResponse(content="All Cookies Deleted")
         for cookie in request.COOKIES:
-            response.delete_cookie(cookie)
+            response.delete_cookie(key=cookie)
         return response
 
 
@@ -107,7 +107,7 @@ class DeleteAllCookiesView(View):
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "delete_all_cookies_view",
     "DeleteAllCookiesView",
 ]
