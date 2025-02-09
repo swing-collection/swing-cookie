@@ -19,7 +19,7 @@ Django app.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 # Import | Libraries
 from django.apps import AppConfig
@@ -53,7 +53,7 @@ class CookieConfig(AppConfig):
     """
 
     name = "swing_cookie"
-    verbose_name: str = _("Swing Cookie")
+    verbose_name: str = _(message="Swing Cookie")
     default_auto_field: str = "django.db.models.AutoField"
 
     def ready(self) -> None:
@@ -78,6 +78,6 @@ class CookieConfig(AppConfig):
 # Module Exports
 # =============================================================================
 
-__all__: list[str] = [
+__all__: List[str] = [
     "CookieConfig",
 ]
