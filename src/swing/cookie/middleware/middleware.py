@@ -31,16 +31,21 @@ class CleanCookiesMiddleware:
     Note that this only applies if COOKIE_CONSENT_OPT_OUT is not set.
     """
 
-    def __init__(self, get_response):
+    def __init__(self, get_response) -> None:
+        """ """
         self.get_response = get_response
 
     def __call__(self, request):
+        """ """
+
         response = self.get_response(request)
         if is_cookie_consent_enabled(request):
-            self.process_response(request, response)
+            self.process_response(request=request, response=response)
         return response
 
     def process_response(self, request, response):
+        """ """
+
         cookie_dic = get_cookie_dict_from_request(request)
 
         cookies_to_delete = []
@@ -52,7 +57,7 @@ class CleanCookiesMiddleware:
             for cookie in cookie_group.cookie_set.all():
                 if cookie.name not in request.COOKIES:
                     continue
-                if _should_delete_cookie(group_version):
+                if _should_delete_cookie(group_version=group_version):
                     cookies_to_delete.append(cookie)
 
         for cookie in cookies_to_delete:
