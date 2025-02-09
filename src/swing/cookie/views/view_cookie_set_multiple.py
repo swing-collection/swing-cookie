@@ -20,7 +20,7 @@ function-based and class-based views.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -53,15 +53,15 @@ def set_multiple_cookies_view(
     HttpResponse
         The response object indicating that multiple cookies have been set.
     """
-    response = HttpResponse("Multiple Cookies Set")
-    cookies_to_set = {
+    response = HttpResponse(content="Multiple Cookies Set")
+    cookies_to_set: Dict[str, str] = {
         "cookie_one": "value_one",
         "cookie_two": "value_two",
         "cookie_three": "value_three",
     }
 
     for name, value in cookies_to_set.items():
-        response.set_cookie(name, value)
+        response.set_cookie(key=name, value=value)
 
     return response
 
@@ -108,15 +108,15 @@ class SetMultipleCookiesView(View):
         HttpResponse
             The response object indicating that multiple cookies have been set.
         """
-        response = HttpResponse("Multiple Cookies Set")
-        cookies_to_set = {
+        response = HttpResponse(content="Multiple Cookies Set")
+        cookies_to_set: Dict[str, str] = {
             "cookie_one": "value_one",
             "cookie_two": "value_two",
             "cookie_three": "value_three",
         }
 
         for name, value in cookies_to_set.items():
-            response.set_cookie(name, value)
+            response.set_cookie(key=name, value=value)
 
         return response
 
@@ -125,7 +125,7 @@ class SetMultipleCookiesView(View):
 # Module Exports
 # =============================================================================
 
-__all__: list[str] = [
+__all__: List[str] = [
     "set_multiple_cookies_view",
     "SetMultipleCookiesView",
 ]
