@@ -1,55 +1,93 @@
 # -*- coding: utf-8 -*-
+from typing import List
+
 from django.contrib import admin
 
-from .conf import settings
-from .models import Cookie, CookieGroup, LogItem
+from ..conf import settings
+from ..models import Cookie, CookieGroup, LogItem
 
 
 class CookieAdmin(admin.ModelAdmin):
-    list_display = (
+    """ """
+
+    list_display: List[str] = [
         "varname",
         "name",
         "cookiegroup",
         "path",
         "domain",
         "get_version",
-    )
-    search_fields = (
+    ]
+    search_fields: List[str] = [
         "name",
         "domain",
         "cookiegroup__varname",
         "cookiegroup__name",
-    )
-    readonly_fields = ("varname",)
-    list_filter = ("cookiegroup",)
+    ]
+    readonly_fields: List[str] = [
+        "varname",
+    ]
+    list_filter: List[str] = [
+        "cookiegroup",
+    ]
 
 
 class CookieGroupAdmin(admin.ModelAdmin):
-    list_display = (
+    """ """
+
+    list_display: List[str] = [
         "varname",
         "name",
         "is_required",
         "is_deletable",
         "get_version",
-    )
-    search_fields = (
+    ]
+    search_fields: List[str] = [
         "varname",
         "name",
-    )
-    list_filter = (
+    ]
+    list_filter: List[str] = [
         "is_required",
         "is_deletable",
-    )
+    ]
 
 
 class LogItemAdmin(admin.ModelAdmin):
-    list_display = ("action", "cookiegroup", "version", "created")
-    list_filter = ("action", "cookiegroup")
-    readonly_fields = ("action", "cookiegroup", "version", "created")
+    """ """
+
+    list_display: List[str] = [
+        "action",
+        "cookiegroup",
+        "version",
+        "created",
+    ]
+    list_filter: List[str] = [
+        "action",
+        "cookiegroup",
+    ]
+    readonly_fields: List[str] = [
+        "action",
+        "cookiegroup",
+        "version",
+        "created",
+    ]
     date_hierarchy = "created"
 
 
-admin.site.register(Cookie, CookieAdmin)
-admin.site.register(CookieGroup, CookieGroupAdmin)
+admin.site.register(
+    model_or_iterable=Cookie,
+    admin_class=CookieAdmin,
+)
+admin.site.register(
+    model_or_iterable=CookieGroup,
+    admin_class=CookieGroupAdmin,
+)
 if settings.COOKIE_CONSENT_LOG_ENABLED:
-    admin.site.register(LogItem, LogItemAdmin)
+    admin.site.register(
+        model_or_iterable=LogItem,
+        admin_class=LogItemAdmin,
+    )
+    admin.site.register(
+        model_or_iterable=LogItem,
+        admin_class=LogItemAdmin,
+    )
