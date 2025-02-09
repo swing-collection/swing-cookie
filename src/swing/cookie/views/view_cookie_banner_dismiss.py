@@ -63,7 +63,7 @@ def dismiss_cookie_banner_view(
     HttpResponse
         A response indicating that the banner has been dismissed.
     """
-    response = HttpResponse(_("Banner Dismissed"))
+    response = HttpResponse(content=_(message="Banner Dismissed"))
     response.set_cookie(
         key="cookie_banner_dismissed",
         value="true",
@@ -112,7 +112,7 @@ class DismissCookieBannerView(View):
         HttpResponse
             A response indicating that the banner has been dismissed.
         """
-        response = HttpResponse(_("Banner Dismissed"))
+        response = HttpResponse(content=_(message="Banner Dismissed"))
         response.set_cookie(
             key="cookie_banner_dismissed",
             value="true",
