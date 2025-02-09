@@ -20,15 +20,16 @@ storing and managing cookies in the database.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Optional
+from typing import Any, Optional
 
 # Import | Libraries
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from ..utils import \
+    clear_cache_after  # Assuming a decorator for cache clearing
 # Import | Local
 from .model_cookie_group import CookieGroupModel
-from .utils import clear_cache_after  # Assuming a decorator for cache clearing
 
 # from .managers import CookieManager  # Assuming you have a custom manager
 
@@ -206,7 +207,11 @@ class CookieModel(models.Model):
         super().save(*args, **kwargs)
 
     @clear_cache_after
-    def delete(self, *args: Any, **kwargs: Any) -> tuple[int, dict[str, int]]:
+    def delete(
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> tuple[int, dict[str, int]]:
         """
         Overrides the delete method to clear the cache after deleting.
 
@@ -267,4 +272,5 @@ class CookieModel(models.Model):
 
 __all__: list[str] = [
     "CookieModel",
+]
 ]
