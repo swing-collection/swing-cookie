@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings  # NOQA
+
+from typing import List
 
 from appconf import AppConf
-
-__all__ = ["settings"]
+from django.conf import settings  # NOQA
 
 
 class CookieConsentConf(AppConf):
+    """ """
+
     # django-cookie-consent cookie settings that store the configuration
     NAME = "cookie_consent"
     # TODO: rename to AGE for parity with django settings
@@ -25,3 +27,6 @@ class CookieConsentConf(AppConf):
     CACHE_BACKEND = "default"
 
     LOG_ENABLED = True
+
+
+__all__: List[str] = ["settings"]
