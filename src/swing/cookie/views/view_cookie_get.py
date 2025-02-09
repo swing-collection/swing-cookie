@@ -20,7 +20,7 @@ function-based and class-based views.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 # Import | Local Modules
 from cookie.models.model_cookie import CookieModel
@@ -52,7 +52,7 @@ def get_cookie_view(request: HttpRequest) -> HttpResponse:
         The response object containing the value of the "example_cookie".
     """
     cookie_value: Optional[str] = request.COOKIES.get("example_cookie")
-    return HttpResponse(f"Cookie Value: {cookie_value}")
+    return HttpResponse(content=f"Cookie Value: {cookie_value}")
 
 
 # =============================================================================
@@ -99,14 +99,14 @@ class GetCookieView(View):
             The response object containing the value of the "example_cookie".
         """
         cookie_value: Optional[str] = request.COOKIES.get("example_cookie")
-        return HttpResponse(f"Cookie Value: {cookie_value}")
+        return HttpResponse(content=f"Cookie Value: {cookie_value}")
 
 
 # =============================================================================
 # Module Exports
 # =============================================================================
 
-__all__ = [
+__all__: List[str] = [
     "get_cookie_view",
     "GetCookieView",
 ]
