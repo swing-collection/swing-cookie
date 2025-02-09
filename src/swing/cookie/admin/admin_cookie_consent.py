@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import CookieConsent
+from ..models import CookieConsent
 
 
 @admin.register(CookieConsent)
