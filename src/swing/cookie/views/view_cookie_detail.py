@@ -78,7 +78,7 @@ def view_cookie_details_view(
 
     except CookieModel.DoesNotExist:
         return HttpResponse(
-            content=_(message="Cookie not found"),
+            content=_("Cookie not found"),
             status=404,
         )
 
@@ -145,7 +145,7 @@ class ViewCookieDetailsView(View):
 
         except CookieModel.DoesNotExist:
             return HttpResponse(
-                content=_(message="Cookie not found"),
+                content=_("Cookie not found"),
                 status=404,
             )
 
