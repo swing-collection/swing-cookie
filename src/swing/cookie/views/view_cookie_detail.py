@@ -26,7 +26,7 @@ It includes:
 # Import | Standard Library
 from typing import Any
 
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 
@@ -48,6 +48,11 @@ def view_cookie_details_view(
 
     Retrieves detailed information about a specific cookie.
 
+    Query Parameters:
+    -----------------
+    name : str (required)
+        The name of the cookie to retrieve details for.
+
     Parameters:
     -----------
     request : HttpRequest
@@ -55,29 +60,38 @@ def view_cookie_details_view(
 
     Returns:
     --------
-    HttpResponse
-        A response containing detailed information about the cookie
+    JsonResponse
+        JSON response containing detailed information about the cookie
         or an error message if not found.
     """
+    cookie_name = request.GET.get("name")
 
-    # Allow dynamic retrieval
-    cookie_name: str = request.GET.get(
-        "name",
-        "example_cookie",
-    )
+    if not cookie_name:
+        return JsonResponse(
+            {"error": "Cookie name is required", "param": "name"},
+            status=400,
+        )
 
     try:
         cookie: CookieModel = CookieModel.objects.get(name=cookie_name)
-        details: str = (
-            f"Name: {cookie.name}, Value: {cookie.value}, Domain: {cookie.domain or 'N/A'}, "
-            f"Path: {cookie.path}, Expires: {cookie.expires or 'Session'}, Secure: {cookie.secure}, "
-            f"HTTPOnly: {cookie.httponly}"
+        return JsonResponse(
+            {
+                "name": cookie.name,
+                "value": cookie.value,
+                "domain": cookie.domain,
+                "path": cookie.path,
+                "expires": (
+                    cookie.expires.isoformat() if cookie.expires else None
+                ),
+                "secure": cookie.secure,
+                "httponly": cookie.httponly,
+                "group": cookie.group.varname if cookie.group else None,
+            }
         )
-        return HttpResponse(content=details)
 
     except CookieModel.DoesNotExist:
-        return HttpResponse(
-            content=_("Cookie not found"),
+        return JsonResponse(
+            {"error": "Cookie not found", "name": cookie_name},
             status=404,
         )
 
@@ -92,18 +106,12 @@ class ViewCookieDetailsView(View):
     View Cookie Details View Class
     ==============================
 
-    A class-based view that retrieves detailed information about a specific
-    cookie named "example_cookie".
+    A class-based view that retrieves detailed information about cookies
+    dynamically based on request parameters.
 
     Methods:
     --------
-    def get(
-        self,
-        request: HttpRequest,
-        *args: Any,
-        **kwargs: dict[str, Any],
-    ) -> HttpResponse:
-        Handles GET requests and updates the cookie value.
+    get : Handle GET requests to retrieve cookie details.
     """
 
     def get(
@@ -113,40 +121,9 @@ class ViewCookieDetailsView(View):
         **kwargs: dict[str, Any],
     ) -> HttpResponse:
         """
-        Handles GET requests to retrieve detailed information about the
-        "example_cookie".
-
-        Parameters:
-        -----------
-        request : HttpRequest
-            The request object.
-
-        Returns:
-        --------
-        HttpResponse
-            The response object containing detailed information about the cookie.
+        Handles GET requests to retrieve cookie details.
         """
-
-        # Allow dynamic retrieval
-        cookie_name: str = request.GET.get(
-            "name",
-            "example_cookie",
-        )
-
-        try:
-            cookie: CookieModel = CookieModel.objects.get(name=cookie_name)
-            details: str = (
-                f"Name: {cookie.name}, Value: {cookie.value}, Domain: {cookie.domain or 'N/A'}, "
-                f"Path: {cookie.path}, Expires: {cookie.expires or 'Session'}, Secure: {cookie.secure}, "
-                f"HTTPOnly: {cookie.httponly}"
-            )
-            return HttpResponse(content=details)
-
-        except CookieModel.DoesNotExist:
-            return HttpResponse(
-                content=_("Cookie not found"),
-                status=404,
-            )
+        return view_cookie_details_view(request)
 
 
 # =============================================================================

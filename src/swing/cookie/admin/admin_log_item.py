@@ -1,51 +1,53 @@
 # -*- coding: utf-8 -*-
 
 """
-Cookie Consent Admin
-====================
+Log Item Admin
+==============
 
-Admin configuration for CookieConsent model.
+Admin configuration for consent audit log.
 
 """
 
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from ..models import CookieConsentModel
+from ..models import LogItem
 
 
-class CookieConsentAdmin(admin.ModelAdmin):
-    """Admin configuration for CookieConsent model."""
+class LogItemAdmin(admin.ModelAdmin):
+    """Admin configuration for consent audit log."""
 
     list_display = [
+        "timestamp",
+        "action",
+        "cookiegroup",
         "get_user_display",
-        "cookie_group",
-        "accepted",
-        "created",
-        "policy_version",
+        "version",
         "ip_address",
     ]
     list_filter = [
-        "accepted",
-        "cookie_group",
+        "action",
+        "cookiegroup",
         ("user", admin.EmptyFieldListFilter),
     ]
     search_fields = [
         "user__username",
-        "user__email",
         "session_key",
         "ip_address",
+        "user_agent",
     ]
     readonly_fields = [
+        "action",
+        "cookiegroup",
         "user",
         "session_key",
-        "cookie_group",
-        "accepted",
-        "created",
-        "policy_version",
         "ip_address",
+        "user_agent",
+        "version",
+        "timestamp",
     ]
-    date_hierarchy = "created"
+    date_hierarchy = "timestamp"
+    ordering = ["-timestamp"]
 
     @admin.display(description=_("User/Session"))
     def get_user_display(self, obj):
@@ -57,5 +59,11 @@ class CookieConsentAdmin(admin.ModelAdmin):
             else "Unknown"
         )
 
+    def has_add_permission(self, request):
+        return False  # Logs are created programmatically only
 
-__all__: list[str] = ["CookieConsentAdmin"]
+    def has_change_permission(self, request, obj=None):
+        return False  # Logs are immutable
+
+
+__all__: list[str] = ["LogItemAdmin"]

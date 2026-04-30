@@ -25,13 +25,16 @@ from django.views.decorators.csrf import csrf_exempt
 # Import | Local
 # Import | Local Views
 from .views import (
+    ConsentExportView,
     CookieConsentWithdrawView,
     CookieGroupAcceptView,
     CookieGroupDeclineView,
     CookieGroupListView,
+    CookiePreferencesView,
     CookieStatusView,
 )
 from .views.view_cookie_delete import cookie_delete_view
+from .views.view_cookie_detail import view_cookie_details_view
 from .views.view_cookie_get import get_cookie_view
 from .views.view_cookie_set import set_cookie_view
 
@@ -43,6 +46,7 @@ cookie_management_patterns = [
     path("set-cookie/", set_cookie_view, name="set_cookie_view"),
     path("get-cookie/", get_cookie_view, name="get_cookie_view"),
     path("delete-cookie/", cookie_delete_view, name="cookie_delete_view"),
+    path("detail/", view_cookie_details_view, name="cookie_detail_view"),
 ]
 
 cookie_consent_patterns = [
@@ -72,6 +76,16 @@ cookie_consent_patterns = [
         name="cookie_consent_withdraw",
     ),
     path("status/", CookieStatusView.as_view(), name="cookie_consent_status"),
+    path(
+        route="preferences/",
+        view=csrf_exempt(CookiePreferencesView.as_view()),
+        name="cookie_consent_preferences",
+    ),
+    path(
+        route="export/",
+        view=ConsentExportView.as_view(),
+        name="cookie_consent_export",
+    ),
     path(
         route="",
         view=CookieGroupListView.as_view(),

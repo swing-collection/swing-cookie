@@ -12,8 +12,9 @@ Cookie Delete Views Module
 This module contains views for managing cookies, including functions and
 class-based views for deleting cookies.
 
-"""
+Supports dynamic cookie names via query parameters.
 
+"""
 
 # =============================================================================
 # Imports
@@ -22,10 +23,10 @@ class-based views for deleting cookies.
 # Import | Standard Library
 from typing import Any
 
-# Import | Libraries
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views import View
 
+# Import | Local
 # Import | Local Modules
 from ..models import CookieModel
 
@@ -39,7 +40,14 @@ def cookie_delete_view(request: HttpRequest) -> HttpResponse:
     Cookie Delete View Function
     ===========================
 
-    Deletes a specific cookie named "example_cookie".
+    Deletes a cookie dynamically based on query parameters.
+
+    Query Parameters (GET) or Form Data (POST/DELETE):
+    ---------------------------------------------------
+    name : str (required)
+        The name of the cookie to delete.
+    from_database : bool (optional, default: False)
+        If True, also removes the cookie record from the database.
 
     Parameters:
     -----------
@@ -48,11 +56,42 @@ def cookie_delete_view(request: HttpRequest) -> HttpResponse:
 
     Returns:
     --------
-    HttpResponse
-        The response object indicating that the cookie has been deleted.
+    JsonResponse
+        JSON response indicating success or failure.
     """
-    response = HttpResponse(content="Cookie Deleted")
-    response.delete_cookie(key="example_cookie")
+    params = (
+        request.POST if request.method in ("POST", "DELETE") else request.GET
+    )
+    name = params.get("name")
+
+    if not name:
+        return JsonResponse(
+            {"error": "Cookie name is required", "param": "name"},
+            status=400,
+        )
+
+    from_database = params.get("from_database", "").lower() in (
+        "true",
+        "1",
+        "yes",
+    )
+    deleted_from_db = False
+
+    # Delete from database if requested
+    if from_database:
+        deleted_count, _ = CookieModel.objects.filter(name=name).delete()
+        deleted_from_db = deleted_count > 0
+
+    # Create response and delete browser cookie
+    response = JsonResponse(
+        {
+            "success": True,
+            "name": name,
+            "deleted_from_browser": True,
+            "deleted_from_database": deleted_from_db,
+        }
+    )
+    response.delete_cookie(key=name)
     return response
 
 
@@ -66,17 +105,11 @@ class CookieDeleteView(View):
     Cookie Delete View Class
     ========================
 
-    A class-based view that deletes a specific cookie named "example_cookie".
+    A class-based view that deletes cookies dynamically.
 
     Methods:
     --------
-    def get(
-        self,
-        request: HttpRequest,
-        *args: Any,
-        **kwargs: dict[str, Any],
-    ) -> HttpResponse:
-        Handles GET requests and updates the cookie value.
+    get, post, delete : Handle requests to delete cookies.
     """
 
     def get(
@@ -85,22 +118,26 @@ class CookieDeleteView(View):
         *args: Any,
         **kwargs: dict[str, Any],
     ) -> HttpResponse:
-        """
-        Handles GET requests to delete the "example_cookie".
+        """Handles GET requests to delete a cookie."""
+        return cookie_delete_view(request)
 
-        Parameters:
-        -----------
-        request : HttpRequest
-            The request object.
+    def post(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: dict[str, Any],
+    ) -> HttpResponse:
+        """Handles POST requests to delete a cookie."""
+        return cookie_delete_view(request)
 
-        Returns:
-        --------
-        HttpResponse
-            The response object indicating that the cookie has been deleted.
-        """
-        response = HttpResponse(content="Cookie Deleted")
-        response.delete_cookie(key="example_cookie")
-        return response
+    def delete(
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: dict[str, Any],
+    ) -> HttpResponse:
+        """Handles DELETE requests to delete a cookie."""
+        return cookie_delete_view(request)
 
 
 # =============================================================================

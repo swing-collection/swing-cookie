@@ -314,6 +314,7 @@ def withdraw_all_consent(request, response) -> None:
     for cookie_group in get_cookie_groups():
         delete_cookies(response, cookie_group)
         if settings.COOKIE_CONSENT_LOG_ENABLED:
+            # Import | Local
             from ..models import LogItem
 
             LogItem.log_consent(
