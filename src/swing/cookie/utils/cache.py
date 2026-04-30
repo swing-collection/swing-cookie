@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.core.cache import caches
 
-from .conf import settings
-from .models import CookieGroup
+# Import | Local
+from ..conf import settings
 
 CACHE_KEY = "cookie_consent_cache"
 CACHE_TIMEOUT = 60 * 60  # 60 minutes
@@ -25,6 +25,10 @@ def delete_cache():
 
 
 def _get_cookie_groups_from_db():
+    # Import here to avoid circular imports
+    # Import | Local
+    from ..models import CookieGroup
+
     qs = CookieGroup.objects.filter(is_required=False).prefetch_related(
         "cookie_set"
     )
@@ -45,7 +49,10 @@ def all_cookie_groups():
 
 
 def get_cookie_group(varname):
-    return all_cookie_groups().get(varname)
+    cookie_groups = all_cookie_groups()
+    if cookie_groups is None:
+        return None
+    return cookie_groups.get(varname)
 
 
 def get_cookie(cookie_group, name, domain):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import List
+
 
 from django.contrib import admin
 
@@ -10,7 +10,7 @@ from ..models import Cookie, CookieGroup, LogItem
 class CookieAdmin(admin.ModelAdmin):
     """ """
 
-    list_display: List[str] = [
+    list_display: list[str] = [
         "varname",
         "name",
         "cookiegroup",
@@ -18,16 +18,16 @@ class CookieAdmin(admin.ModelAdmin):
         "domain",
         "get_version",
     ]
-    search_fields: List[str] = [
+    search_fields: list[str] = [
         "name",
         "domain",
         "cookiegroup__varname",
         "cookiegroup__name",
     ]
-    readonly_fields: List[str] = [
+    readonly_fields: list[str] = [
         "varname",
     ]
-    list_filter: List[str] = [
+    list_filter: list[str] = [
         "cookiegroup",
     ]
 
@@ -35,18 +35,18 @@ class CookieAdmin(admin.ModelAdmin):
 class CookieGroupAdmin(admin.ModelAdmin):
     """ """
 
-    list_display: List[str] = [
+    list_display: list[str] = [
         "varname",
         "name",
         "is_required",
         "is_deletable",
         "get_version",
     ]
-    search_fields: List[str] = [
+    search_fields: list[str] = [
         "varname",
         "name",
     ]
-    list_filter: List[str] = [
+    list_filter: list[str] = [
         "is_required",
         "is_deletable",
     ]
@@ -55,17 +55,17 @@ class CookieGroupAdmin(admin.ModelAdmin):
 class LogItemAdmin(admin.ModelAdmin):
     """ """
 
-    list_display: List[str] = [
+    list_display: list[str] = [
         "action",
         "cookiegroup",
         "version",
         "created",
     ]
-    list_filter: List[str] = [
+    list_filter: list[str] = [
         "action",
         "cookiegroup",
     ]
-    readonly_fields: List[str] = [
+    readonly_fields: list[str] = [
         "action",
         "cookiegroup",
         "version",

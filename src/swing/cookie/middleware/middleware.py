@@ -1,12 +1,18 @@
+# Import | Standard Library
 # -*- coding: utf-8 -*-
-from typing import Optional
-
-from .cache import all_cookie_groups
-from .conf import settings
-from .util import get_cookie_dict_from_request, is_cookie_consent_enabled
+# Import | Standard Library
 
 
-def _should_delete_cookie(group_version: Optional[str]) -> bool:
+# Import | Local
+from ..conf import settings
+from ..utils.cache import all_cookie_groups
+from ..utils.util import (
+    get_cookie_dict_from_request,
+    is_cookie_consent_enabled,
+)
+
+
+def _should_delete_cookie(group_version: str | None) -> bool:
     # declined after it was accepted (and set) before
     if group_version == settings.COOKIE_CONSENT_DECLINE:
         return True
@@ -49,7 +55,10 @@ class CleanCookiesMiddleware:
         cookie_dic = get_cookie_dict_from_request(request)
 
         cookies_to_delete = []
-        for cookie_group in all_cookie_groups().values():
+        cookie_groups = all_cookie_groups()
+        if cookie_groups is None:
+            return response
+        for cookie_group in cookie_groups.values():
             if not cookie_group.is_deletable:
                 continue
 

@@ -1,25 +1,62 @@
 # -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Cookie Consent Utilities
+========================
+
+This module provides utility functions for managing cookie consent,
+including parsing, accepting, declining, and withdrawing consent.
+
+"""
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Standard Library
 import datetime
-from typing import Any, List, Union
+from typing import Any, Optional
 
+# Import | Local
+from ..conf import settings
 from .cache import all_cookie_groups, get_cookie, get_cookie_group
-from .conf import settings
-from .models import ACTION_ACCEPTED, ACTION_DECLINED, LogItem
+
+# Constants imported lazily to avoid circular imports
+ACTION_ACCEPTED = "accepted"
+ACTION_DECLINED = "declined"
 
 
-def parse_cookie_str(cookie):
-    """ "Docstring for parse_cookie_str
+# =============================================================================
+# Functions
+# =============================================================================
 
-    :param cookie: Description
-    :type cookie:
-    :return: Description
-    :rtype: dict"""
-    dic = {}
+
+def parse_cookie_str(cookie: Optional[str]) -> dict[str, str]:
+    """
+    Parses a cookie consent string into a dictionary.
+
+    Parameters:
+    -----------
+    cookie : str | None
+        The cookie string in format "key1=value1|key2=value2".
+
+    Returns:
+    --------
+    dict[str, str]
+        A dictionary mapping cookie group varnames to their consent versions.
+    """
+    dic: dict[str, str] = {}
     if not cookie:
         return dic
     for c in cookie.split("|"):
-        key, value = c.split("=")
-        dic[key] = value
+        if "=" in c:
+            key, value = c.split("=", 1)
+            dic[key] = value
     return dic
 
 
@@ -92,10 +129,13 @@ def get_cookie_value_from_request(
 
 def get_cookie_groups(varname=None):
     """ """
+    cookie_groups = all_cookie_groups()
+    if cookie_groups is None:
+        return []
     if not varname:
-        return all_cookie_groups().values()
+        return cookie_groups.values()
     keys = varname.split(",")
-    return [g for k, g in all_cookie_groups().items() if k in keys]
+    return [g for k, g in cookie_groups.items() if k in keys]
 
 
 def accept_cookies(
@@ -110,6 +150,9 @@ def accept_cookies(
     for cookie_group in get_cookie_groups(varname):
         cookie_dic[cookie_group.varname] = cookie_group.get_version()
         if settings.COOKIE_CONSENT_LOG_ENABLED:
+            # Import | Local
+            from ..models import LogItem
+
             LogItem.objects.create(
                 action=ACTION_ACCEPTED,
                 cookiegroup=cookie_group,
@@ -138,6 +181,9 @@ def decline_cookies(
         cookie_dic[cookie_group.varname] = settings.COOKIE_CONSENT_DECLINE
         delete_cookies(response, cookie_group)
         if settings.COOKIE_CONSENT_LOG_ENABLED:
+            # Import | Local
+            from ..models import LogItem
+
             LogItem.objects.create(
                 action=ACTION_DECLINED,
                 cookiegroup=cookie_group,
@@ -160,8 +206,8 @@ def are_all_cookies_accepted(request) -> bool:
 
 def _get_cookie_groups_by_state(
     request,
-    state: Union[bool, None],
-) -> List[Any]:
+    state: bool | None,
+) -> list[Any]:
     """ """
     return [
         cookie_group
@@ -174,14 +220,14 @@ def _get_cookie_groups_by_state(
     ]
 
 
-def get_not_accepted_or_declined_cookie_groups(request) -> List[Any]:
+def get_not_accepted_or_declined_cookie_groups(request) -> list[Any]:
     """
     Returns all cookie groups that are neither accepted or declined.
     """
     return _get_cookie_groups_by_state(request, state=None)
 
 
-def get_accepted_cookie_groups(request) -> List[Any]:
+def get_accepted_cookie_groups(request) -> list[Any]:
     """
     Returns all cookie groups that are accepted.
     """
@@ -191,7 +237,7 @@ def get_accepted_cookie_groups(request) -> List[Any]:
     )
 
 
-def get_declined_cookie_groups(request) -> List[Any]:
+def get_declined_cookie_groups(request) -> list[Any]:
     """
     Returns all cookie groups that are declined.
     """
@@ -233,7 +279,10 @@ def get_accepted_cookies(request):
     """
     cookie_dic = get_cookie_dict_from_request(request)
     accepted_cookies = []
-    for cookie_group in all_cookie_groups().values():
+    cookie_groups = all_cookie_groups()
+    if cookie_groups is None:
+        return accepted_cookies
+    for cookie_group in cookie_groups.values():
         version = cookie_dic.get(cookie_group.varname, None)
         if not version or version == settings.COOKIE_CONSENT_DECLINE:
             continue
@@ -241,3 +290,66 @@ def get_accepted_cookies(request):
             if version >= cookie.get_version():
                 accepted_cookies.append(cookie)
     return accepted_cookies
+
+
+def withdraw_all_consent(request, response) -> None:
+    """
+    Withdraw all cookie consent.
+
+    This declines all cookie groups, deletes their cookies, and clears
+    the consent cookie entirely.
+
+    Parameters:
+    -----------
+    request : HttpRequest
+        The current HTTP request.
+    response : HttpResponse
+        The HTTP response to modify.
+
+    Returns:
+    --------
+    None
+    """
+    # Decline all cookie groups
+    for cookie_group in get_cookie_groups():
+        delete_cookies(response, cookie_group)
+        if settings.COOKIE_CONSENT_LOG_ENABLED:
+            from ..models import LogItem
+
+            LogItem.log_consent(
+                action=ACTION_DECLINED,
+                cookiegroup=cookie_group,
+                request=request,
+            )
+
+    # Clear the consent cookie entirely
+    response.delete_cookie(
+        settings.COOKIE_CONSENT_NAME,
+        path="/",
+        domain=settings.COOKIE_CONSENT_DOMAIN,
+    )
+
+
+# =============================================================================
+# Module Exports
+# =============================================================================
+
+__all__: list[str] = [
+    "accept_cookies",
+    "are_all_cookies_accepted",
+    "decline_cookies",
+    "delete_cookies",
+    "dict_to_cookie_str",
+    "get_accepted_cookie_groups",
+    "get_accepted_cookies",
+    "get_cookie_dict_from_request",
+    "get_cookie_groups",
+    "get_cookie_string",
+    "get_cookie_value_from_request",
+    "get_declined_cookie_groups",
+    "get_not_accepted_or_declined_cookie_groups",
+    "is_cookie_consent_enabled",
+    "parse_cookie_str",
+    "set_cookie_dict_to_response",
+    "withdraw_all_consent",
+]

@@ -19,9 +19,8 @@ Django app.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-# Import | Libraries
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
@@ -78,6 +77,6 @@ class SwingCookieConfig(AppConfig):
 # Module Exports
 # =============================================================================
 
-__all__: List[str] = [
-    "CookieConfig",
+__all__: list[str] = [
+    "SwingCookieConfig",
 ]

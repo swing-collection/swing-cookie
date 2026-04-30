@@ -14,7 +14,6 @@ storing and managing cookies in the database.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -22,17 +21,12 @@ storing and managing cookies in the database.
 # Import | Standard Library
 from typing import Any, Optional
 
-# Import | Libraries
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from ..utils import \
-    clear_cache_after  # Assuming a decorator for cache clearing
 # Import | Local
+from ..utils import clear_cache_after
 from .model_cookie_group import CookieGroupModel
-
-# from .managers import CookieManager  # Assuming you have a custom manager
-
 
 # =============================================================================
 # Class
@@ -53,15 +47,15 @@ class CookieModel(models.Model):
         The group to which the cookie belongs (e.g., necessary, analytics, etc.).
     name : str
         The name of the cookie.
-    description : Optional[str]
+    description : str | None
         A brief description of the cookie's purpose.
-    domain : Optional[str]
+    domain : str | None
         The domain for which the cookie is valid.
     path : str
         The path for which the cookie is valid.
     value : str
         The value of the cookie.
-    expires : Optional[datetime]
+    expires : datetime | None
         The expiration date and time of the cookie.
     secure : bool
         Whether the cookie is secure (sent only over HTTPS).
@@ -73,14 +67,11 @@ class CookieModel(models.Model):
         The timestamp when the cookie was last updated.
     """
 
-    # Manager for the CookieModel (optional)
-    # objects = CookieManager()
-
     cookiegroup = models.ForeignKey(
         CookieGroupModel,
         verbose_name=_("Cookie Group"),
         on_delete=models.CASCADE,
-        related_name="cookies",
+        related_name="cookie_set",
         help_text=_("The group to which this cookie belongs."),
     )
 
@@ -229,18 +220,18 @@ class CookieModel(models.Model):
         """
         return super().delete(*args, **kwargs)
 
-    def natural_key(self) -> tuple[str, Optional[str]]:
+    def natural_key(self) -> tuple[str, str | None, str]:
         """
         Returns a natural key that uniquely identifies the cookie.
 
         Returns:
         --------
-        tuple[str, Optional[str]]
-            A tuple containing the cookie name and domain.
+        tuple[str, str | None, str]
+            A tuple containing the cookie name, domain, and group varname.
         """
         return (self.name, self.domain) + self.cookiegroup.natural_key()
 
-    natural_key.dependencies = ["cookie_consent.cookiegroup"]
+    natural_key.dependencies = ["swing_cookie.cookiegroupmodel"]
 
     @property
     def varname(self) -> str:
@@ -267,10 +258,18 @@ class CookieModel(models.Model):
 
 
 # =============================================================================
+# Aliases
+# =============================================================================
+
+# Alias for compatibility with existing code
+Cookie = CookieModel
+
+
+# =============================================================================
 # Module Exports
 # =============================================================================
 
 __all__: list[str] = [
+    "Cookie",
     "CookieModel",
-]
 ]

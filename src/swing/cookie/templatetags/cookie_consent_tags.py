@@ -1,12 +1,14 @@
+# Import | Standard Library
 import warnings
 
 from django import template
 from django.urls import reverse
 from django.utils.html import json_script
 
-from ..cache import all_cookie_groups as get_all_cookie_groups
+# Import | Local
 from ..conf import settings
-from ..util import (
+from ..utils.cache import all_cookie_groups as get_all_cookie_groups
+from ..utils.util import (
     are_all_cookies_accepted,
     get_accepted_cookies,
     get_cookie_dict_from_request,
@@ -177,5 +179,7 @@ def all_cookie_groups(element_id: str):
     This uses Django's core json_script filter under the hood.
     """
     groups = get_all_cookie_groups()
+    if groups is None:
+        return json_script([], element_id)
     value = [group.for_json() for group in groups.values()]
     return json_script(value, element_id)

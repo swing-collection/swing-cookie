@@ -15,7 +15,6 @@ policy for the website, including its version, content, and timestamps.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -23,12 +22,8 @@ policy for the website, including its version, content, and timestamps.
 # Import | Standard Library
 from typing import Any
 
-# Import | Libraries
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-# Import | Local
-
 
 # =============================================================================
 # Class
@@ -65,6 +60,22 @@ class CookiePolicyModel(models.Model):
     content = models.TextField(
         _("Content"),
         help_text=_("The content of the cookie policy."),
+    )
+
+    is_active = models.BooleanField(
+        _("Active"),
+        default=True,
+        help_text=_(
+            "Whether this policy version is active. "
+            "Only one policy should be active at a time."
+        ),
+    )
+
+    effective_date = models.DateField(
+        _("Effective Date"),
+        null=True,
+        blank=True,
+        help_text=_("The date when this policy becomes effective."),
     )
 
     created_at = models.DateTimeField(

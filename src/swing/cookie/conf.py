@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from typing import List
 
 from appconf import AppConf
 from django.conf import settings  # NOQA
@@ -29,4 +28,4 @@ class CookieConsentConf(AppConf):
     LOG_ENABLED = True
 
 
-__all__: List[str] = ["settings"]
+__all__: list[str] = ["settings"]
