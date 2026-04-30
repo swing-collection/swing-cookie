@@ -11,6 +11,7 @@ Admin configuration for CookiePolicy model.
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
+# Import | Local
 from ..models import CookiePolicyModel
 
 

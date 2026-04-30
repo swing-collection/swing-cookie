@@ -8,10 +8,12 @@ Retrieves cookie values dynamically based on query parameters.
 
 """
 
+# Import | Standard Library
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse, JsonResponse
 
+# Import | Local
 from ..models import CookieModel
 
 

@@ -1,0 +1,146 @@
+{% extends "demo/base.html" %}
+{% block title %}Cookie Preferences - Swing Cookie{% endblock %}
+{% block content %}
+<h1>⚙️ Cookie Preferences</h1>
+
+<div class="card">
+  <h2>Manage Your Cookie Settings</h2>
+  <p>
+    Choose which types of cookies you allow. Necessary cookies are always
+    enabled as they are required for the website to function properly.
+  </p>
+</div>
+
+<form id="preferences-form" class="card">
+  <h2>Cookie Categories</h2>
+  <div id="cookie-groups-list">
+    <p>Loading cookie groups...</p>
+  </div>
+
+  <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 20px">
+    <button type="submit" class="btn btn-primary">Save Preferences</button>
+    <button type="button" class="btn btn-success" onclick="acceptAll()">
+      Accept All
+    </button>
+    <button type="button" class="btn btn-danger" onclick="declineAll()">
+      Decline All
+    </button>
+  </div>
+</form>
+
+<div class="card">
+  <h2>Export Your Consent Data</h2>
+  <p>
+    Under GDPR, you have the right to access your consent records. Click the
+    button below to download your consent history.
+  </p>
+  <button class="btn btn-secondary" onclick="exportConsent()">
+    Export Consent Data
+  </button>
+  <pre id="export-data" style="display: none; margin-top: 15px"></pre>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  function renderCookieGroups() {
+    const container = document.getElementById("cookie-groups-list");
+    const groups = SwingCookieConsent.state.groups;
+
+    if (Object.keys(groups).length === 0) {
+      container.innerHTML =
+        '<p>No cookie groups configured. Add some via the <a href="/admin/">admin panel</a>.</p>';
+      return;
+    }
+
+    let html = "";
+    for (const [varname, group] of Object.entries(groups)) {
+      const isChecked = group.accepted || group.is_required;
+      const isDisabled = group.is_required;
+
+      html += `
+            <div class="cookie-group">
+                <div class="cookie-group-header">
+                    <div>
+                        <h3 style="margin: 0;">${group.name}</h3>
+                        ${group.is_required ? '<span class="status-badge status-accepted">Required</span>' : ""}
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox"
+                               name="${varname}"
+                               data-varname="${varname}"
+                               ${isChecked ? "checked" : ""}
+                               ${isDisabled ? "disabled" : ""}>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <p style="margin: 10px 0 0 0; color: #666; font-size: 14px;">
+                    ${getGroupDescription(varname)}
+                </p>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+  }
+
+  function getGroupDescription(varname) {
+    const descriptions = {
+      necessary:
+        "Essential cookies required for the website to function. Cannot be disabled.",
+      analytics: "Help us understand how visitors interact with our website.",
+      marketing: "Used to deliver personalized advertisements.",
+      preferences: "Remember your settings and preferences.",
+      social: "Enable social media features and sharing.",
+    };
+    return descriptions[varname] || "Cookies in this category.";
+  }
+
+  document
+    .getElementById("preferences-form")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const checkboxes = this.querySelectorAll(
+        'input[type="checkbox"][data-varname]',
+      );
+      const preferences = {};
+
+      checkboxes.forEach((checkbox) => {
+        if (!checkbox.disabled) {
+          preferences[checkbox.dataset.varname] = checkbox.checked;
+        }
+      });
+
+      SwingCookieConsent.updatePreferences(preferences).then(() => {
+        alert("Preferences saved successfully!");
+      });
+    });
+
+  function acceptAll() {
+    SwingCookieConsent.accept().then(() => {
+      renderCookieGroups();
+    });
+  }
+
+  function declineAll() {
+    SwingCookieConsent.decline().then(() => {
+      renderCookieGroups();
+    });
+  }
+
+  function exportConsent() {
+    fetch('{% url "cookie_consent_export" %}')
+      .then((response) => response.json())
+      .then((data) => {
+        const pre = document.getElementById("export-data");
+        pre.style.display = "block";
+        pre.textContent = JSON.stringify(data, null, 2);
+      })
+      .catch((error) => {
+        alert("Error exporting consent data: " + error);
+      });
+  }
+
+  document.addEventListener("cookieConsentLoaded", renderCookieGroups);
+  document.addEventListener("cookieConsentUpdated", renderCookieGroups);
+</script>
+{% endblock %}

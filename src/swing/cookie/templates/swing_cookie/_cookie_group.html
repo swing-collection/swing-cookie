@@ -4,7 +4,7 @@
 
 <div class="cookie-group">
   <div class="cookie-group-title">
-    <h3>{{ cookie_group.name }}</h3>
+    <h3>{{ cookie_group.name }}{% if cookie_group.is_required %} <span class="badge badge-required">{% trans "Required" %}</span>{% endif %}</h3>
 
     {% if not cookie_group.is_required %}
       <div class="cookie-group-form">

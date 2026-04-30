@@ -1,0 +1,140 @@
+[
+    {
+        "model": "cookie.cookiegroupmodel",
+        "pk": 1,
+        "fields": {
+            "varname": "necessary",
+            "name": "Necessary Cookies",
+            "description": "Essential cookies required for the website to function properly. These cannot be disabled.",
+            "is_required": true,
+            "is_deletable": false,
+            "ordering": 0
+        }
+    },
+    {
+        "model": "cookie.cookiegroupmodel",
+        "pk": 2,
+        "fields": {
+            "varname": "analytics",
+            "name": "Analytics Cookies",
+            "description": "Help us understand how visitors interact with our website by collecting anonymous usage data.",
+            "is_required": false,
+            "is_deletable": true,
+            "ordering": 1
+        }
+    },
+    {
+        "model": "cookie.cookiegroupmodel",
+        "pk": 3,
+        "fields": {
+            "varname": "marketing",
+            "name": "Marketing Cookies",
+            "description": "Used to deliver personalized advertisements and track ad campaign performance.",
+            "is_required": false,
+            "is_deletable": true,
+            "ordering": 2
+        }
+    },
+    {
+        "model": "cookie.cookiegroupmodel",
+        "pk": 4,
+        "fields": {
+            "varname": "preferences",
+            "name": "Preference Cookies",
+            "description": "Remember your settings and preferences for a better experience.",
+            "is_required": false,
+            "is_deletable": true,
+            "ordering": 3
+        }
+    },
+    {
+        "model": "cookie.cookiemodel",
+        "pk": 1,
+        "fields": {
+            "name": "sessionid",
+            "cookiegroup": 1,
+            "description": "Django session cookie",
+            "domain": null,
+            "path": "/",
+            "value": "",
+            "expires": null,
+            "secure": true,
+            "httponly": true
+        }
+    },
+    {
+        "model": "cookie.cookiemodel",
+        "pk": 2,
+        "fields": {
+            "name": "csrftoken",
+            "cookiegroup": 1,
+            "description": "Django CSRF protection cookie",
+            "domain": null,
+            "path": "/",
+            "value": "",
+            "expires": null,
+            "secure": true,
+            "httponly": false
+        }
+    },
+    {
+        "model": "cookie.cookiemodel",
+        "pk": 3,
+        "fields": {
+            "name": "_ga",
+            "cookiegroup": 2,
+            "description": "Google Analytics tracking cookie",
+            "domain": null,
+            "path": "/",
+            "value": "",
+            "expires": null,
+            "secure": false,
+            "httponly": false
+        }
+    },
+    {
+        "model": "cookie.cookiemodel",
+        "pk": 4,
+        "fields": {
+            "name": "_gid",
+            "cookiegroup": 2,
+            "description": "Google Analytics session cookie",
+            "domain": null,
+            "path": "/",
+            "value": "",
+            "expires": null,
+            "secure": false,
+            "httponly": false
+        }
+    },
+    {
+        "model": "cookie.cookiemodel",
+        "pk": 5,
+        "fields": {
+            "name": "_fbp",
+            "cookiegroup": 3,
+            "description": "Facebook Pixel tracking cookie",
+            "domain": null,
+            "path": "/",
+            "value": "",
+            "expires": null,
+            "secure": false,
+            "httponly": false
+        }
+    },
+    {
+        "model": "cookie.cookiemodel",
+        "pk": 6,
+        "fields": {
+            "name": "theme",
+            "cookiegroup": 4,
+            "description": "User theme preference",
+            "domain": null,
+            "path": "/",
+            "value": "",
+            "expires": null,
+            "secure": false,
+            "httponly": false
+        }
+    }
+]

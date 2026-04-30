@@ -10,6 +10,7 @@ Sets a cookie dynamically based on request parameters.
 
 from django.http import HttpRequest, HttpResponse, JsonResponse
 
+# Import | Local
 from ..models import CookieModel
 
 

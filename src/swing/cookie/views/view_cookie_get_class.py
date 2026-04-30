@@ -8,11 +8,13 @@ A class-based view that retrieves cookie values dynamically.
 
 """
 
+# Import | Standard Library
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.views import View
 
+# Import | Local
 from .view_cookie_get_func import get_cookie_view
 
 

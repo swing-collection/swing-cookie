@@ -1,0 +1,137 @@
+{% extends "demo/base.html" %}
+{% block title %}Analytics Demo - Swing Cookie{% endblock %}
+{% block content %}
+<h1>📊 Analytics Demo</h1>
+
+<div class="card">
+  <h2>Conditional Script Loading</h2>
+  <p>
+    This page demonstrates how analytics scripts are conditionally loaded based
+    on user consent. The scripts below will only execute if the
+    <strong>analytics</strong> cookie group has been accepted.
+  </p>
+</div>
+
+<div class="card">
+  <h2>Analytics Status</h2>
+  <div id="analytics-status">
+    <p>Checking consent status...</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Simulated Analytics Events</h2>
+  <p>
+    Click the buttons below to simulate analytics events. They will only work
+    if analytics cookies are accepted.
+  </p>
+  <div>
+    <button
+      class="btn btn-primary"
+      onclick="trackEvent('page_view', 'Home Page')"
+    >
+      Track Page View
+    </button>
+    <button
+      class="btn btn-primary"
+      onclick="trackEvent('button_click', 'CTA Button')"
+    >
+      Track Button Click
+    </button>
+    <button
+      class="btn btn-primary"
+      onclick="trackEvent('form_submit', 'Contact Form')"
+    >
+      Track Form Submit
+    </button>
+  </div>
+  <div id="event-log" style="margin-top: 20px">
+    <h4>Event Log:</h4>
+    <pre id="events-list" style="max-height: 200px; overflow-y: auto">
+No events tracked yet.</pre
+    >
+  </div>
+</div>
+
+<div class="card">
+  <h2>Code Example</h2>
+  <p>Here's how to conditionally load scripts based on consent:</p>
+  <pre><code>&lt;!-- This script type prevents execution until consent is given --&gt;
+&lt;script type="x/cookie_consent" data-varname="analytics"&gt;
+    // Google Analytics initialization
+    gtag('config', 'UA-XXXXX-Y');
+&lt;/script&gt;
+
+&lt;!-- Or check programmatically --&gt;
+&lt;script&gt;
+    if (SwingCookieConsent.isAccepted('analytics')) {
+        // Initialize analytics
+    }
+&lt;/script&gt;</code></pre>
+</div>
+
+<!-- Example of deferred script that waits for consent -->
+<script type="x/cookie_consent" data-varname="analytics">
+  console.log('Analytics script loaded - user gave consent!');
+  window.analyticsEnabled = true;
+</script>
+{% endblock %} {% block extra_js %}
+<script>
+  const eventsList = [];
+
+  function updateAnalyticsStatus() {
+    const statusDiv = document.getElementById("analytics-status");
+    const isAccepted = SwingCookieConsent.isAccepted("analytics");
+
+    if (isAccepted) {
+      statusDiv.innerHTML = `
+            <p class="status-badge status-accepted" style="display: inline-block; font-size: 16px;">
+                ✓ Analytics cookies ACCEPTED
+            </p>
+            <p>Analytics scripts are enabled and can track user behavior.</p>
+        `;
+    } else if (SwingCookieConsent.state.groups.analytics?.declined) {
+      statusDiv.innerHTML = `
+            <p class="status-badge status-declined" style="display: inline-block; font-size: 16px;">
+                ✗ Analytics cookies DECLINED
+            </p>
+            <p>Analytics scripts are blocked. No tracking will occur.</p>
+        `;
+    } else {
+      statusDiv.innerHTML = `
+            <p class="status-badge status-pending" style="display: inline-block; font-size: 16px;">
+                ⏳ Consent PENDING
+            </p>
+            <p>Waiting for user to provide consent for analytics cookies.</p>
+            <button class="btn btn-success" onclick="SwingCookieConsent.accept('analytics')">
+                Accept Analytics Cookies
+            </button>
+        `;
+    }
+  }
+
+  function trackEvent(eventType, eventName) {
+    if (!SwingCookieConsent.isAccepted("analytics")) {
+      alert("Analytics cookies not accepted. Event not tracked.");
+      return;
+    }
+
+    const event = {
+      type: eventType,
+      name: eventName,
+      timestamp: new Date().toISOString(),
+    };
+    eventsList.push(event);
+
+    document.getElementById("events-list").textContent = JSON.stringify(
+      eventsList,
+      null,
+      2,
+    );
+    console.log("Event tracked:", event);
+  }
+
+  document.addEventListener("cookieConsentLoaded", updateAnalyticsStatus);
+  document.addEventListener("cookieConsentUpdated", updateAnalyticsStatus);
+</script>
+{% endblock %}

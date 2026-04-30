@@ -8,12 +8,14 @@ Returns the current consent status for all cookie groups.
 
 """
 
+# Import | Standard Library
 from typing import Any
 
 from django.http import HttpRequest, JsonResponse
 from django.middleware.csrf import get_token as get_csrf_token
 from django.views.generic import View
 
+# Import | Local
 from ..utils.cache import all_cookie_groups
 from ..utils.util import get_cookie_dict_from_request
 
@@ -53,6 +55,7 @@ class CookieStatusView(View):
         any_consent_given = False
 
         if cookie_groups:
+            # Import | Local
             from ..conf import settings
 
             for varname, group in cookie_groups.items():

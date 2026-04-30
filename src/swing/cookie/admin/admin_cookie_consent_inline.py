@@ -10,6 +10,7 @@ Inline admin for viewing consent records.
 
 from django.contrib import admin
 
+# Import | Local
 from ..models import CookieConsentModel
 
 

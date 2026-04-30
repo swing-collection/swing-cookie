@@ -16,36 +16,47 @@ Defines URL patterns for the demo project. This includes:
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
 
-# Import | Standard Library
-
-# Import | Libraries
 from django.contrib import admin
 from django.urls import include, path
 from django.urls.resolvers import URLResolver
 
+# Import | Local
 # Import | Local Modules
-
+from . import views
 
 # =============================================================================
 # URL Patterns
 # =============================================================================
 
 urlpatterns: list[URLResolver] = [
+    # Admin
     path(
         route="admin/",
         view=admin.site.urls,
     ),
-    path(
-        route="hello/",
-        view=include(arg="swing.cookie.urls"),
-    ),
+    # Demo pages
     path(
         route="",
+        view=views.home_view,
+        name="demo_home",
+    ),
+    path(
+        route="analytics/",
+        view=views.analytics_page,
+        name="demo_analytics",
+    ),
+    path(
+        route="preferences/",
+        view=views.preferences_page,
+        name="demo_preferences",
+    ),
+    # Cookie consent URLs
+    path(
+        route="cookie-consent/",
         view=include(arg="swing.cookie.urls"),
     ),
 ]

@@ -8,6 +8,7 @@ View to accept cookie groups.
 
 """
 
+# Import | Local
 from ..utils.util import accept_cookies
 from .view_cookie_group_base import CookieGroupBaseProcessView
 

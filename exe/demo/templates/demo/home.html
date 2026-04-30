@@ -1,0 +1,131 @@
+{% extends "demo/base.html" %}
+{% block title %}Swing Cookie Demo - Home{% endblock %}
+{% block content %}
+<h1>🍪 Swing Cookie Consent Demo</h1>
+
+<div class="card">
+  <h2>Welcome</h2>
+  <p>
+    This demo showcases the <strong>swing-cookie</strong> Django app for
+    managing cookie consent in a GDPR-compliant way.
+  </p>
+  <p>Features demonstrated:</p>
+  <ul>
+    <li>✅ Cookie consent banner with accept/decline options</li>
+    <li>✅ Granular per-category consent management</li>
+    <li>✅ Consent status tracking via JSON API</li>
+    <li>✅ JavaScript event hooks for dynamic updates</li>
+    <li>✅ Audit logging for GDPR compliance</li>
+    <li>✅ Anonymous user consent via session</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>Current Consent Status</h2>
+  <div id="consent-status">
+    <p>Loading...</p>
+  </div>
+  <div style="margin-top: 15px">
+    <button class="btn btn-primary" onclick="refreshStatus()">
+      Refresh Status
+    </button>
+    <button class="btn btn-danger" onclick="SwingCookieConsent.withdrawAll()">
+      Withdraw All Consent
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Quick Actions</h2>
+  <p>Test the consent flow:</p>
+  <div>
+    <button class="btn btn-success" data-cookie-consent="accept">
+      Accept All Cookies
+    </button>
+    <button class="btn btn-danger" data-cookie-consent="decline">
+      Decline All Cookies
+    </button>
+  </div>
+
+  <h3 style="margin-top: 20px">Accept/Decline by Category</h3>
+  <div id="category-actions">
+    <p>Loading categories...</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>API Endpoints</h2>
+  <p>The following API endpoints are available:</p>
+  <pre><code>GET  /status/       - Get current consent status
+POST /accept/       - Accept all cookie groups
+POST /accept/{var}/ - Accept specific cookie group
+POST /decline/      - Decline all cookie groups
+POST /decline/{var}/- Decline specific cookie group
+POST /preferences/  - Update preferences (JSON body)
+POST /withdraw/     - Withdraw all consent
+GET  /export/       - Export consent records (GDPR)</code></pre>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  function refreshStatus() {
+    SwingCookieConsent.loadStatus().then(renderStatus);
+  }
+
+  function renderStatus() {
+    const state = SwingCookieConsent.state;
+    const statusDiv = document.getElementById("consent-status");
+
+    let html = `<p><strong>Consent Given:</strong> ${state.consentGiven ? "Yes" : "No"}</p>`;
+    html += '<table style="width:100%; border-collapse: collapse;">';
+    html +=
+      '<tr style="border-bottom: 1px solid #ddd;"><th style="text-align:left; padding:8px;">Group</th><th>Status</th><th>Required</th></tr>';
+
+    for (const [varname, group] of Object.entries(state.groups)) {
+      let statusBadge = "";
+      if (group.accepted) {
+        statusBadge =
+          '<span class="status-badge status-accepted">Accepted</span>';
+      } else if (group.declined) {
+        statusBadge =
+          '<span class="status-badge status-declined">Declined</span>';
+      } else {
+        statusBadge =
+          '<span class="status-badge status-pending">Pending</span>';
+      }
+
+      html += `<tr style="border-bottom: 1px solid #eee;">
+            <td style="padding:8px;"><strong>${group.name}</strong> (${varname})</td>
+            <td style="padding:8px; text-align:center;">${statusBadge}</td>
+            <td style="padding:8px; text-align:center;">${group.is_required ? "✓" : ""}</td>
+        </tr>`;
+    }
+    html += "</table>";
+
+    statusDiv.innerHTML = html;
+
+    // Render category actions
+    const actionsDiv = document.getElementById("category-actions");
+    let actionsHtml = "";
+    for (const [varname, group] of Object.entries(state.groups)) {
+      actionsHtml += `
+            <div style="margin: 10px 0;">
+                <strong>${group.name}:</strong>
+                <button class="btn btn-success" onclick="SwingCookieConsent.accept('${varname}')" ${group.is_required ? "disabled" : ""}>Accept</button>
+                <button class="btn btn-danger" onclick="SwingCookieConsent.decline('${varname}')" ${group.is_required ? "disabled" : ""}>Decline</button>
+            </div>
+        `;
+    }
+    actionsDiv.innerHTML =
+      actionsHtml ||
+      "<p>No cookie groups configured. Add some via the admin.</p>";
+  }
+
+  document.addEventListener("cookieConsentLoaded", function (e) {
+    renderStatus();
+  });
+
+  document.addEventListener("cookieConsentUpdated", function (e) {
+    renderStatus();
+  });
+</script>
+{% endblock %}

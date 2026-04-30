@@ -24,7 +24,6 @@ and `ALLOWED_HOSTS` appropriately for deployment.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -32,8 +31,6 @@ and `ALLOWED_HOSTS` appropriately for deployment.
 # Import | Standard Library
 from pathlib import Path
 from typing import Dict, List
-
-# Import | Libraries
 
 # Import | Local Modules
 
@@ -69,7 +66,8 @@ INSTALLED_APPS: List[str] = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Local apps
-    "swing.cookie",  # Reusable app under development]
+    "demo",  # Demo app
+    "swing.cookie",  # Cookie consent app
 ]
 
 
@@ -85,6 +83,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Cookie consent middleware - cleans cookies that were declined
+    "swing.cookie.middleware.CleanCookiesMiddleware",
 ]
 
 
@@ -179,3 +179,35 @@ STATICFILES_DIRS: List[Path] = [BASE_DIR / "static"]  # Additional static files
 # =============================================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# =============================================================================
+# Cache Configuration
+# =============================================================================
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
+}
+
+
+# =============================================================================
+# Cookie Consent Settings
+# =============================================================================
+
+COOKIE_CONSENT_ENABLED = True
+COOKIE_CONSENT_CACHE_BACKEND = "default"
+COOKIE_CONSENT_NAME = "cookie_consent"
+COOKIE_CONSENT_MAX_AGE = 60 * 60 * 24 * 365  # 1 year
+COOKIE_CONSENT_DOMAIN = None  # Cookie domain (None = current domain)
+COOKIE_CONSENT_SECURE = False
+COOKIE_CONSENT_HTTPONLY = True
+COOKIE_CONSENT_SAMESITE = "Lax"
+COOKIE_CONSENT_OPT_OUT = False  # GDPR default: require opt-in
+COOKIE_CONSENT_DECLINE = "-1"  # Value indicating declined consent
+COOKIE_CONSENT_LOG_ENABLED = True  # Enable consent logging
+COOKIE_CONSENT_LOG_IP_ADDRESS = True  # Log IP for GDPR proof
+COOKIE_CONSENT_LOG_USER_AGENT = True  # Log user agent
+COOKIE_CONSENT_EXPIRY_DAYS = 365  # Consent expires after 1 year
+COOKIE_CONSENT_REPROMPT_ON_POLICY_CHANGE = True

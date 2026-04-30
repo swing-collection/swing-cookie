@@ -8,11 +8,13 @@ A class-based view for retrieving cookie details.
 
 """
 
+# Import | Standard Library
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.views import View
 
+# Import | Local
 from .view_cookie_detail_func import view_cookie_details_view
 
 

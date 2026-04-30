@@ -8,11 +8,13 @@ A class-based view for updating cookies.
 
 """
 
+# Import | Standard Library
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.views import View
 
+# Import | Local
 from .view_cookie_update_func import update_cookie_view
 
 

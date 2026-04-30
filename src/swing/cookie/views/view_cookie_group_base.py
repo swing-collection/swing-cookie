@@ -15,6 +15,7 @@ from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.generic import View
 
+# Import | Local
 from .view_is_ajax_like import is_ajax_like
 
 

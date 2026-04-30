@@ -8,6 +8,7 @@ View to decline cookie groups.
 
 """
 
+# Import | Local
 from ..utils.util import decline_cookies
 from .view_cookie_group_base import CookieGroupBaseProcessView
 

@@ -8,6 +8,7 @@ Withdraw all cookie consent.
 
 """
 
+# Import | Local
 from ..utils.util import withdraw_all_consent
 from .view_cookie_group_base import CookieGroupBaseProcessView
 

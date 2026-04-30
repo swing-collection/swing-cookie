@@ -8,12 +8,14 @@ Export consent records for GDPR compliance (Article 7.1).
 
 """
 
+# Import | Standard Library
 from datetime import datetime
 from typing import Any
 
 from django.http import HttpRequest, JsonResponse
 from django.views.generic import View
 
+# Import | Local
 from ..models import CookieConsentModel, LogItem
 
 

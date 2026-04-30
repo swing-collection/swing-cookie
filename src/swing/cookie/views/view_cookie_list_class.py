@@ -8,11 +8,13 @@ A class-based view for listing all cookies.
 
 """
 
+# Import | Standard Library
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.views import View
 
+# Import | Local
 from .view_cookie_list_func import list_cookies_view
 
 

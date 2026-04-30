@@ -1,14 +1,21 @@
-{% extends "cookie_consent/base.html" %}
+{% extends "swing_cookie/base.html" %}
+
+{% block title %}Cookie Settings{% endblock %}
 
 {% block body %}
-  <h1>Cookies</h1>
+  <h1>Cookie Settings</h1>
 
   <p>
-    This is a list of the categories of cookies used in our website and why we use them.
+    This is a list of the categories of cookies used on our website and why we use them.
+    You can accept or decline each category below.
   </p>
 
-  {% for cookie_group in object_list  %}
-    {% include "cookie_consent/_cookie_group.html" %}
+  {% for cookie_group in object_list %}
+    {% include "swing_cookie/_cookie_group.html" %}
+  {% empty %}
+    <div class="card">
+      <p>No cookie groups configured.</p>
+    </div>
   {% endfor %}
 
 {% endblock %}

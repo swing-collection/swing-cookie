@@ -8,11 +8,13 @@ A class-based view that sets cookies dynamically.
 
 """
 
+# Import | Standard Library
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.views import View
 
+# Import | Local
 from .view_cookie_set_func import set_cookie_view
 
 

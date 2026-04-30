@@ -8,12 +8,14 @@ Manage granular cookie preferences.
 
 """
 
+# Import | Standard Library
 import json
 from typing import Any
 
 from django.http import HttpRequest, JsonResponse
 from django.views.generic import View
 
+# Import | Local
 from ..utils.cache import all_cookie_groups
 from ..utils.util import accept_cookies, decline_cookies
 from .view_cookie_status import CookieStatusView

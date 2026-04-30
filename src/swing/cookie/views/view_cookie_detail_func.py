@@ -10,6 +10,7 @@ Retrieves detailed information about a specific cookie.
 
 from django.http import HttpRequest, HttpResponse, JsonResponse
 
+# Import | Local
 from ..models.model_cookie import CookieModel
 
 

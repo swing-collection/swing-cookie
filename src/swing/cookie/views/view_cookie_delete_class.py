@@ -8,11 +8,13 @@ A class-based view that deletes cookies dynamically.
 
 """
 
+# Import | Standard Library
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.views import View
 
+# Import | Local
 from .view_cookie_delete_func import cookie_delete_view
 
 

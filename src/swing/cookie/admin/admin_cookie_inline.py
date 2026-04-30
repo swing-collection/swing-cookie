@@ -10,6 +10,7 @@ Inline admin for editing cookies within a cookie group.
 
 from django.contrib import admin
 
+# Import | Local
 from ..models import Cookie
 
 
