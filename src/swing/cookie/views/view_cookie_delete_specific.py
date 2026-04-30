@@ -20,10 +20,10 @@ class-based views for deleting cookies.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, List
+from typing import Any
 
 # Import | Local Modules
-from cookie.models.model_cookie import CookieModel
+from ..models import CookieModel
 
 # Import | Libraries
 from django.http import HttpRequest, HttpResponse
@@ -53,7 +53,7 @@ def clear_specific_cookies_view(request: HttpRequest) -> HttpResponse:
     """
     response = HttpResponse(content="Specific Cookies Cleared")
     prefix = "example_"
-    cookies_to_clear: List[str] = [
+    cookies_to_clear: list[str] = [
         cookie for cookie in request.COOKIES if cookie.startswith(prefix)
     ]
 
@@ -82,7 +82,7 @@ class ClearSpecificCookiesView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         Handles GET requests and updates the cookie value.
     """
@@ -91,7 +91,7 @@ class ClearSpecificCookiesView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to clear cookies that start with a specific prefix.
@@ -108,7 +108,7 @@ class ClearSpecificCookiesView(View):
         """
         response = HttpResponse(content="Specific Cookies Cleared")
         prefix = "example_"
-        cookies_to_clear: List[str] = [
+        cookies_to_clear: list[str] = [
             cookie for cookie in request.COOKIES if cookie.startswith(prefix)
         ]
 
@@ -122,7 +122,7 @@ class ClearSpecificCookiesView(View):
 # Module Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "clear_specific_cookies_view",
     "ClearSpecificCookiesView",
 ]

@@ -10,7 +10,6 @@ Cookie Set Views Module
 =======================
 
 
-
 """
 
 # =============================================================================
@@ -18,10 +17,10 @@ Cookie Set Views Module
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, List
+from typing import Any
 
 # Import | Local Modules
-from cookie.models.model_cookie import CookieModel
+from ..models import CookieModel
 
 # Import | Libraries
 from django.http import HttpRequest, HttpResponse
@@ -49,7 +48,7 @@ def list_cookies_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object containing a list of all cookies and their values.
     """
-    cookies: Dict[str, str] = request.COOKIES
+    cookies: dict[str, str] = request.COOKIES
     cookies_list: str = ", ".join(
         [f"{key}: {value}" for key, value in cookies.items()]
     )
@@ -74,7 +73,7 @@ class ListCookiesView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         Handles GET requests and updates the cookie value.
     """
@@ -83,7 +82,7 @@ class ListCookiesView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to list all cookies present in the request.
@@ -98,7 +97,7 @@ class ListCookiesView(View):
         HttpResponse
             The response object containing a list of all cookies and their values.
         """
-        cookies: Dict[str, str] = request.COOKIES
+        cookies: dict[str, str] = request.COOKIES
         cookies_list: str = ", ".join(
             [f"{key}: {value}" for key, value in cookies.items()]
         )
@@ -109,7 +108,7 @@ class ListCookiesView(View):
 # Module Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "list_cookies_view",
     "ListCookiesView",
 ]

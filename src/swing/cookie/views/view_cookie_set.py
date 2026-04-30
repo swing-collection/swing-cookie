@@ -20,10 +20,10 @@ function-based and class-based views.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, List
+from typing import Any
 
 # Import | Local Modules
-from cookie.models.model_cookie import CookieModel
+from ..models import CookieModel
 
 # Import | Libraries
 from django.http import HttpRequest, HttpResponse
@@ -93,7 +93,7 @@ class SetCookieView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         Handles GET requests and updates the cookie value.
     """
@@ -102,7 +102,7 @@ class SetCookieView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to set the "example_cookie".
@@ -144,7 +144,7 @@ class SetCookieView(View):
 # Module Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "set_cookie_view",
     "SetCookieView",
 ]

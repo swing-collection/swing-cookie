@@ -20,14 +20,14 @@ class-based views for deleting cookies.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, List
-
-# Import | Local Modules
-from cookie.models.model_cookie import CookieModel
+from typing import Any
 
 # Import | Libraries
 from django.http import HttpRequest, HttpResponse
 from django.views import View
+
+# Import | Local Modules
+from ..models import CookieModel
 
 # =============================================================================
 # Function
@@ -74,7 +74,7 @@ class CookieDeleteView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         Handles GET requests and updates the cookie value.
     """
@@ -83,7 +83,7 @@ class CookieDeleteView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to delete the "example_cookie".
@@ -107,7 +107,7 @@ class CookieDeleteView(View):
 # Module Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "cookie_delete_view",
     "CookieDeleteView",
 ]

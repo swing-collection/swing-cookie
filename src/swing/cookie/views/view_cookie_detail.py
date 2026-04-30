@@ -19,19 +19,18 @@ It includes:
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, List
+from typing import Any
 
-# Import | Libraries
 from django.http import HttpRequest, HttpResponse
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 
+# Import | Local
 # Import | Local Modules
 from ..models.model_cookie import CookieModel
 
@@ -64,7 +63,7 @@ def view_cookie_details_view(
     # Allow dynamic retrieval
     cookie_name: str = request.GET.get(
         "name",
-        default="example_cookie",
+        "example_cookie",
     )
 
     try:
@@ -102,7 +101,7 @@ class ViewCookieDetailsView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         Handles GET requests and updates the cookie value.
     """
@@ -111,7 +110,7 @@ class ViewCookieDetailsView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to retrieve detailed information about the
@@ -131,7 +130,7 @@ class ViewCookieDetailsView(View):
         # Allow dynamic retrieval
         cookie_name: str = request.GET.get(
             "name",
-            default="example_cookie",
+            "example_cookie",
         )
 
         try:
@@ -154,7 +153,7 @@ class ViewCookieDetailsView(View):
 # Module Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "view_cookie_details_view",
     "ViewCookieDetailsView",
 ]

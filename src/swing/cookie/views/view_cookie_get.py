@@ -20,10 +20,10 @@ function-based and class-based views.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 # Import | Local Modules
-from cookie.models.model_cookie import CookieModel
+from ..models import CookieModel
 
 # Import | Libraries
 from django.http import HttpRequest, HttpResponse
@@ -51,7 +51,7 @@ def get_cookie_view(request: HttpRequest) -> HttpResponse:
     HttpResponse
         The response object containing the value of the "example_cookie".
     """
-    cookie_value: Optional[str] = request.COOKIES.get("example_cookie")
+    cookie_value: str | None = request.COOKIES.get("example_cookie")
     return HttpResponse(content=f"Cookie Value: {cookie_value}")
 
 
@@ -74,7 +74,7 @@ class GetCookieView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         Handles GET requests and updates the cookie value.
     """
@@ -83,7 +83,7 @@ class GetCookieView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to retrieve the value of the "example_cookie".
@@ -98,7 +98,7 @@ class GetCookieView(View):
         HttpResponse
             The response object containing the value of the "example_cookie".
         """
-        cookie_value: Optional[str] = request.COOKIES.get("example_cookie")
+        cookie_value: str | None = request.COOKIES.get("example_cookie")
         return HttpResponse(content=f"Cookie Value: {cookie_value}")
 
 
@@ -106,7 +106,7 @@ class GetCookieView(View):
 # Module Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "get_cookie_view",
     "GetCookieView",
 ]

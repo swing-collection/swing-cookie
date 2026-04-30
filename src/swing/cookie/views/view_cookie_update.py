@@ -17,10 +17,10 @@ Cookie Set Views Module
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict, List
+from typing import Any
 
 # Import | Local Modules
-from cookie.models.model_cookie import CookieModel
+from ..models import CookieModel
 
 # Import | Libraries
 from django.http import HttpRequest, HttpResponse
@@ -74,7 +74,7 @@ class UpdateCookieView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         Handles GET requests and updates the cookie value.
     """
@@ -83,7 +83,7 @@ class UpdateCookieView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to update the value of the "example_cookie".
@@ -108,7 +108,7 @@ class UpdateCookieView(View):
 # Module Exports
 # =============================================================================
 
-__all__: List[str] = [
+__all__: list[str] = [
     "update_cookie_view",
     "UpdateCookieView",
 ]

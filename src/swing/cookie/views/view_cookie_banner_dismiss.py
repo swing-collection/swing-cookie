@@ -29,7 +29,7 @@ It includes:
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Dict
+from typing import Any
 
 # Import | Libraries
 from django.http import HttpRequest, HttpResponse
@@ -89,7 +89,7 @@ class DismissCookieBannerView(View):
 
     Methods:
     --------
-    get(request: HttpRequest, *args: Any, **kwargs: Dict[str, Any]) -> HttpResponse:
+    get(request: HttpRequest, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:
         Handles GET requests and sets a cookie indicating the banner has been dismissed.
     """
 
@@ -97,7 +97,7 @@ class DismissCookieBannerView(View):
         self,
         request: HttpRequest,
         *args: Any,
-        **kwargs: Dict[str, Any],
+        **kwargs: dict[str, Any],
     ) -> HttpResponse:
         """
         Handles GET requests to set a cookie indicating the banner has been dismissed.
