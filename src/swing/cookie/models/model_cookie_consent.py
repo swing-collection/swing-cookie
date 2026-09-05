@@ -164,9 +164,9 @@ class CookieConsentModel(models.Model):
         Provides metadata for the `CookieConsentModel` class.
         """
 
-        verbose_name: str = _("Cookie Consent")
-        verbose_name_plural: str = _("Cookie Consents")
-        ordering: list[str] = ["-created_at"]
+        verbose_name = _("Cookie Consent")
+        verbose_name_plural = _("Cookie Consents")
+        ordering = ["-created_at"]
         constraints = [
             models.CheckConstraint(
                 condition=models.Q(user__isnull=False)

@@ -20,7 +20,7 @@ cookie groups.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from django.conf import settings
 from django.db import models
@@ -189,9 +189,9 @@ class LogItem(models.Model):
         cls,
         action: str,
         cookiegroup: CookieGroupModel,
-        request: Optional["HttpRequest"] = None,
-        user: Optional["AbstractUser"] = None,
-        session_key: Optional[str] = None,
+        request: "HttpRequest | None" = None,
+        user: "AbstractUser | None" = None,
+        session_key: str | None = None,
     ) -> "LogItem":
         """
         Creates a log entry for a consent action.

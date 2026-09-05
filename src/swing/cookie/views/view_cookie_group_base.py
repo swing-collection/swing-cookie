@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Group Base Process View
 ==============================
@@ -10,7 +15,7 @@ Base class for processing cookie group consent actions.
 
 from django.contrib.auth.views import RedirectURLMixin
 from django.core.exceptions import SuspiciousOperation
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.generic import View

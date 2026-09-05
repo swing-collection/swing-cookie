@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Consent Inline Admin
 ===========================
@@ -21,12 +26,12 @@ class CookieConsentInline(admin.TabularInline):
 
     model = CookieConsentModel
     extra = 0
-    fields = ["user", "session_key", "accepted", "created", "ip_address"]
+    fields = ["user", "session_key", "consent_given", "created_at", "ip_address"]
     readonly_fields = [
         "user",
         "session_key",
-        "accepted",
-        "created",
+        "consent_given",
+        "created_at",
         "ip_address",
     ]
     can_delete = False

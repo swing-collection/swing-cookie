@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Log Item Admin
 ==============
@@ -12,7 +17,6 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 # Import | Local
-from ..models import LogItem
 
 
 class LogItemAdmin(admin.ModelAdmin):

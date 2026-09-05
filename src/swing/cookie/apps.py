@@ -19,7 +19,6 @@ Django app.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any
 
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
@@ -52,7 +51,7 @@ class SwingCookieConfig(AppConfig):
     """
 
     name = "swing.cookie"
-    verbose_name: str = _("Swing Cookie")
+    verbose_name = _("Swing Cookie")
     default_auto_field: str = "django.db.models.AutoField"
 
     # def ready(self) -> None:

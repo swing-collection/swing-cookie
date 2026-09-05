@@ -1,0 +1,379 @@
+{% load i18n %}
+{% load static %}
+{# Cookie Banner Template - swing-cookie #}
+{# Include this template to display a GDPR-compliant cookie consent banner #}
+
+{% if show_banner %}
+<div id="cookie-consent-banner"
+     class="cookie-banner cookie-banner--{{ cookie_banner_position|default:'bottom' }} cookie-banner--{{ cookie_banner_style|default:'bar' }}"
+     role="dialog"
+     aria-labelledby="cookie-banner-title"
+     aria-describedby="cookie-banner-description"
+     data-cookie-banner>
+
+    <div class="cookie-banner__content">
+        <h2 id="cookie-banner-title" class="cookie-banner__title">
+            {% block banner_title %}
+            {% trans "Cookie Consent" %}
+            {% endblock %}
+        </h2>
+
+        <p id="cookie-banner-description" class="cookie-banner__description">
+            {% block banner_description %}
+            {% trans "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking 'Accept All', you consent to our use of cookies." %}
+            {% endblock %}
+        </p>
+
+        {% block banner_cookie_groups %}
+        {% if cookie_groups %}
+        <div class="cookie-banner__groups">
+            {% for varname, status in consent_status.items %}
+            <div class="cookie-group cookie-group--{{ varname }}{% if status.is_required %} cookie-group--required{% endif %}">
+                <label class="cookie-group__label">
+                    <input type="checkbox"
+                           name="cookie_{{ varname }}"
+                           value="1"
+                           {% if status.is_required %}checked disabled{% endif %}
+                           {% if status.accepted %}checked{% endif %}
+                           data-cookie-group="{{ varname }}">
+                    <span class="cookie-group__name">{{ status.name }}</span>
+                    {% if status.is_required %}
+                    <span class="cookie-group__badge cookie-group__badge--required">{% trans "Required" %}</span>
+                    {% endif %}
+                </label>
+                {% if status.description %}
+                <p class="cookie-group__description">{{ status.description }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endblock %}
+
+        <div class="cookie-banner__actions">
+            {% block banner_actions %}
+            <button type="button"
+                    class="cookie-banner__btn cookie-banner__btn--accept-all"
+                    data-cookie-accept-all>
+                {% trans "Accept All" %}
+            </button>
+
+            <button type="button"
+                    class="cookie-banner__btn cookie-banner__btn--essential"
+                    data-cookie-essential-only>
+                {% trans "Essential Only" %}
+            </button>
+
+            <button type="button"
+                    class="cookie-banner__btn cookie-banner__btn--customize"
+                    data-cookie-customize>
+                {% trans "Customize" %}
+            </button>
+            {% endblock %}
+        </div>
+
+        <div class="cookie-banner__links">
+            {% block banner_links %}
+            <a href="{% url 'cookie_consent_policy' %}" class="cookie-banner__link">
+                {% trans "Cookie Policy" %}
+            </a>
+            <a href="{% url 'cookie_consent_preferences' %}" class="cookie-banner__link">
+                {% trans "Manage Preferences" %}
+            </a>
+            {% endblock %}
+        </div>
+    </div>
+
+    <button type="button"
+            class="cookie-banner__close"
+            aria-label="{% trans 'Close cookie banner' %}"
+            data-cookie-close>
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+{% block banner_styles %}
+<style>
+.cookie-banner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: #fff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.cookie-banner--bottom { bottom: 0; }
+.cookie-banner--top { top: 0; }
+
+.cookie-banner--bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.cookie-banner--modal {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    max-width: 600px;
+    border-radius: 8px;
+}
+
+.cookie-banner__content {
+    flex: 1;
+    min-width: 280px;
+}
+
+.cookie-banner__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.cookie-banner__description {
+    margin: 0 0 1rem;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.cookie-banner__groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.cookie-group {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.cookie-group__label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.cookie-group--required .cookie-group__label {
+    cursor: default;
+}
+
+.cookie-group__name {
+    font-weight: 500;
+    color: #333;
+}
+
+.cookie-group__badge {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+}
+
+.cookie-group__badge--required {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.cookie-group__description {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.cookie-banner__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.cookie-banner__btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cookie-banner__btn--accept-all {
+    background: #4caf50;
+    color: #fff;
+}
+
+.cookie-banner__btn--accept-all:hover {
+    background: #43a047;
+}
+
+.cookie-banner__btn--essential {
+    background: #607d8b;
+    color: #fff;
+}
+
+.cookie-banner__btn--essential:hover {
+    background: #546e7a;
+}
+
+.cookie-banner__btn--customize {
+    background: transparent;
+    color: #1976d2;
+    border: 1px solid #1976d2;
+}
+
+.cookie-banner__btn--customize:hover {
+    background: #e3f2fd;
+}
+
+.cookie-banner__links {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+}
+
+.cookie-banner__link {
+    color: #1976d2;
+    text-decoration: none;
+}
+
+.cookie-banner__link:hover {
+    text-decoration: underline;
+}
+
+.cookie-banner__close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    background: transparent;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cookie-banner__close:hover {
+    color: #333;
+}
+
+/* Hide banner when consent given */
+.cookie-banner--hidden {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cookie-banner--bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cookie-banner__actions {
+        justify-content: stretch;
+    }
+
+    .cookie-banner__btn {
+        flex: 1;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block banner_script %}
+<script>
+(function() {
+    'use strict';
+
+    const banner = document.querySelector('[data-cookie-banner]');
+    if (!banner) return;
+
+    const acceptAllBtn = banner.querySelector('[data-cookie-accept-all]');
+    const essentialBtn = banner.querySelector('[data-cookie-essential-only]');
+    const customizeBtn = banner.querySelector('[data-cookie-customize]');
+    const closeBtn = banner.querySelector('[data-cookie-close]');
+    const checkboxes = banner.querySelectorAll('[data-cookie-group]');
+
+    const updateEndpoint = "{% url 'cookie_consent_update' %}";
+    const preferencesUrl = "{% url 'cookie_consent_preferences' %}";
+
+    function hideBanner() {
+        banner.classList.add('cookie-banner--hidden');
+        document.body.classList.remove('with-cookie-banner');
+    }
+
+    function sendConsent(data) {
+        fetch(updateEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                hideBanner();
+                // Dispatch event for other scripts
+                window.dispatchEvent(new CustomEvent('cookieConsentUpdated', {
+                    detail: result
+                }));
+            }
+        })
+        .catch(console.error);
+    }
+
+    if (acceptAllBtn) {
+        acceptAllBtn.addEventListener('click', function() {
+            sendConsent({ consent: 'all' });
+        });
+    }
+
+    if (essentialBtn) {
+        essentialBtn.addEventListener('click', function() {
+            sendConsent({ consent: 'essential' });
+        });
+    }
+
+    if (customizeBtn) {
+        customizeBtn.addEventListener('click', function() {
+            // Collect selected preferences
+            const prefs = {};
+            checkboxes.forEach(function(cb) {
+                if (!cb.disabled) {
+                    prefs[cb.dataset.cookieGroup] = cb.checked;
+                }
+            });
+            sendConsent(prefs);
+        });
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            // Just hide, don't send consent (user can always reopen)
+            hideBanner();
+        });
+    }
+
+    // Add body class for styling
+    document.body.classList.add('with-cookie-banner');
+})();
+</script>
+{% endblock %}
+
+{% endif %}

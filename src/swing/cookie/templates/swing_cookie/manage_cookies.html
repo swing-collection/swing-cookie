@@ -1,23 +1,207 @@
-<!-- templates/swing_cookie/manage_cookies.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Manage Cookies</title>
-</head>
-<body>
-    <h1>Manage Cookies</h1>
-    <ul>
-        {% for cookie in cookies %}
-            <li>{{ cookie.name }}: {{ cookie.value }}</li>
-        {% endfor %}
-    </ul>
-    <form method="post" action="{% url 'set_cookie_view' %}">
+{% extends "swing_cookie/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Manage Cookie Preferences" %}{% endblock %}
+
+{% block body %}
+<div class="manage-cookies">
+    <h1>{% trans "Cookie Preferences" %}</h1>
+
+    <p class="manage-cookies__intro">
+        {% blocktrans %}
+        Customize your cookie preferences below. Required cookies cannot be disabled
+        as they are essential for the website to function properly.
+        {% endblocktrans %}
+    </p>
+
+    <form id="cookie-preferences-form" method="post" action="{% url 'cookie_consent_preferences' %}">
         {% csrf_token %}
-        <button type="submit">Set Cookie</button>
+
+        <div class="cookie-groups">
+            {% for group in cookie_groups %}
+            <div class="cookie-group card">
+                <div class="cookie-group-title">
+                    <h3>{{ group.name }}</h3>
+                    {% if group.is_required %}
+                    <span class="badge badge-required">{% trans "Required" %}</span>
+                    {% else %}
+                    <span class="badge badge-optional">{% trans "Optional" %}</span>
+                    {% endif %}
+                </div>
+
+                {% if group.description %}
+                <p>{{ group.description }}</p>
+                {% endif %}
+
+                <div class="cookie-group-form">
+                    {% if group.is_required %}
+                    <span class="cookie-consent-accepted">{% trans "Always Active" %}</span>
+                    <input type="hidden" name="{{ group.varname }}" value="true">
+                    {% else %}
+                    <label class="toggle-switch">
+                        <input type="checkbox"
+                               name="{{ group.varname }}"
+                               value="true"
+                               {% if group.accepted %}checked{% endif %}>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    {% endif %}
+                </div>
+
+                {% if group.cookies %}
+                <details class="cookie-details">
+                    <summary>{% trans "View cookies" %} ({{ group.cookies|length }})</summary>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>{% trans "Name" %}</th>
+                                <th>{% trans "Purpose" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cookie in group.cookies %}
+                            <tr>
+                                <td><code>{{ cookie.name }}</code></td>
+                                <td>{{ cookie.description|default:"-" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </details>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p>{% trans "No cookie categories have been configured." %}</p>
+            {% endfor %}
+        </div>
+
+        <div class="manage-cookies__actions">
+            <button type="submit" class="btn btn-primary">
+                {% trans "Save Preferences" %}
+            </button>
+            <button type="button" class="btn btn-secondary" data-accept-all>
+                {% trans "Accept All" %}
+            </button>
+            <button type="button" class="btn btn-secondary" data-decline-optional>
+                {% trans "Decline Optional" %}
+            </button>
+        </div>
     </form>
-    <form method="post" action="{% url 'delete_cookie_view' %}">
-        {% csrf_token %}
-        <button type="submit">Delete Cookie</button>
-    </form>
-</body>
-</html>
+</div>
+
+<style>
+.manage-cookies {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.manage-cookies__intro {
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.cookie-groups {
+    margin-bottom: 2rem;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .3s;
+    border-radius: 26px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: #27ae60;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+.cookie-details {
+    margin-top: 1rem;
+}
+
+.cookie-details summary {
+    cursor: pointer;
+    color: #1976d2;
+    font-size: 0.9rem;
+}
+
+.cookie-details table {
+    margin-top: 0.5rem;
+}
+
+.manage-cookies__actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: #1976d2;
+    color: white;
+}
+
+.btn-secondary {
+    background: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+}
+</style>
+
+<script>
+(function() {
+    const form = document.getElementById('cookie-preferences-form');
+    const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+
+    document.querySelector('[data-accept-all]')?.addEventListener('click', function() {
+        checkboxes.forEach(cb => cb.checked = true);
+    });
+
+    document.querySelector('[data-decline-optional]')?.addEventListener('click', function() {
+        checkboxes.forEach(cb => cb.checked = false);
+    });
+})();
+</script>
+{% endblock %}
+

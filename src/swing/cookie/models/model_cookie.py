@@ -19,7 +19,7 @@ storing and managing cookies in the database.
 # =============================================================================
 
 # Import | Standard Library
-from typing import Any, Optional
+from typing import Any
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -164,7 +164,7 @@ class CookieModel(models.Model):
                 name="unique_cookie_constraint",
             ),
         ]
-        ordering: list[str] = [
+        ordering = [
             "-created_at",
         ]
 
@@ -231,7 +231,11 @@ class CookieModel(models.Model):
         """
         return (self.name, self.domain) + self.cookiegroup.natural_key()
 
-    natural_key.dependencies = ["swing_cookie.cookiegroupmodel"]
+    # Django's natural key serialization convention: attach a
+    # `dependencies` attribute to the bound method so `dumpdata`/`loaddata`
+    # order fixtures correctly. Functions support arbitrary attributes at
+    # runtime, but typeshed's Callable protocol doesn't model this pattern.
+    natural_key.dependencies = ["swing_cookie.cookiegroupmodel"]  # type: ignore[attr-defined]
 
     @property
     def varname(self) -> str:

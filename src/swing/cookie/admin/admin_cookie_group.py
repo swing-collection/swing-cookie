@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Group Admin
 ==================
@@ -13,9 +18,12 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 # Import | Local
-from ..models import CookieGroup
-from .admin_cookie_consent_inline import CookieConsentInline
 from .admin_cookie_inline import CookieInline
+
+# NOTE: CookieConsentInline is intentionally not used here. CookieConsentModel
+# tracks consent per user/session (with necessary/analytics/marketing flags),
+# not per CookieGroupModel - there is no ForeignKey relating the two models,
+# so it cannot be registered as an inline on CookieGroupAdmin.
 
 
 class CookieGroupAdmin(admin.ModelAdmin):
@@ -41,7 +49,7 @@ class CookieGroupAdmin(admin.ModelAdmin):
     ]
     list_editable = ["ordering"]
     ordering = ["ordering", "name"]
-    inlines = [CookieInline, CookieConsentInline]
+    inlines = [CookieInline]
     fieldsets = [
         (
             None,

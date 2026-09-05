@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Policy Admin
 ===================
@@ -12,7 +17,6 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 # Import | Local
-from ..models import CookiePolicyModel
 
 
 class CookiePolicyAdmin(admin.ModelAdmin):
@@ -22,7 +26,7 @@ class CookiePolicyAdmin(admin.ModelAdmin):
         "version",
         "is_active_badge",
         "effective_date",
-        "created",
+        "created_at",
     ]
     list_filter = [
         "is_active",
@@ -31,8 +35,8 @@ class CookiePolicyAdmin(admin.ModelAdmin):
         "version",
         "content",
     ]
-    date_hierarchy = "created"
-    ordering = ["-created"]
+    date_hierarchy = "created_at"
+    ordering = ["-created_at"]
     fieldsets = [
         (
             None,

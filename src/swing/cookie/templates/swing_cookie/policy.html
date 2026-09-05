@@ -1,0 +1,222 @@
+{% extends "swing_cookie/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Cookie Policy" %}{% if site_name %} - {{ site_name }}{% endif %}{% endblock %}
+
+{% block body %}
+<div class="cookie-policy">
+    <header class="cookie-policy__header">
+        <h1>{% trans "Cookie Policy" %}</h1>
+        {% if last_updated %}
+        <p class="cookie-policy__updated">
+            {% blocktrans %}Last updated: {{ last_updated }}{% endblocktrans %}
+        </p>
+        {% endif %}
+    </header>
+
+    <section class="cookie-policy__intro card">
+        <h2>{% trans "What are cookies?" %}</h2>
+        <p>
+            {% blocktrans %}
+            Cookies are small text files that are placed on your device when you visit a website.
+            They are widely used to make websites work more efficiently and to provide information
+            to the website owners.
+            {% endblocktrans %}
+        </p>
+    </section>
+
+    <section class="cookie-policy__how-we-use card">
+        <h2>{% trans "How we use cookies" %}</h2>
+        <p>
+            {% blocktrans %}
+            We use cookies for various purposes including:
+            {% endblocktrans %}
+        </p>
+        <ul>
+            <li>{% trans "Essential website functionality" %}</li>
+            <li>{% trans "Remembering your preferences" %}</li>
+            <li>{% trans "Analyzing how you use our site" %}</li>
+            <li>{% trans "Personalizing content and ads" %}</li>
+        </ul>
+    </section>
+
+    <section class="cookie-policy__groups">
+        <h2>{% trans "Cookie Categories" %}</h2>
+
+        {% for group in cookie_groups %}
+        <div class="cookie-group card">
+            <div class="cookie-group-title">
+                <h3>{{ group.name }}</h3>
+                <span class="badge {% if group.is_required %}badge-required{% else %}badge-optional{% endif %}">
+                    {% if group.is_required %}{% trans "Required" %}{% else %}{% trans "Optional" %}{% endif %}
+                </span>
+            </div>
+
+            {% if group.description %}
+            <p>{{ group.description }}</p>
+            {% endif %}
+
+            {% if group.cookies %}
+            <table class="cookie-table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Cookie Name" %}</th>
+                        <th>{% trans "Purpose" %}</th>
+                        <th>{% trans "Duration" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cookie in group.cookies %}
+                    <tr>
+                        <td><code>{{ cookie.name }}</code></td>
+                        <td>{{ cookie.description|default:"-" }}</td>
+                        <td>{{ cookie.duration }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">{% trans "No specific cookies defined" %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p>{% trans "No cookie categories have been configured." %}</p>
+        {% endfor %}
+    </section>
+
+    <section class="cookie-policy__your-choices card">
+        <h2>{% trans "Your Choices" %}</h2>
+        <p>
+            {% blocktrans %}
+            You can manage your cookie preferences at any time. You can choose to accept all cookies,
+            only essential cookies, or customize your preferences for each category.
+            {% endblocktrans %}
+        </p>
+        <div class="cookie-policy__actions">
+            <a href="{% url 'cookie_consent_preferences' %}" class="btn btn-primary">
+                {% trans "Manage Cookie Preferences" %}
+            </a>
+        </div>
+    </section>
+
+    <section class="cookie-policy__browser card">
+        <h2>{% trans "Browser Settings" %}</h2>
+        <p>
+            {% blocktrans %}
+            Most web browsers also allow you to control cookies through their settings.
+            You can set your browser to refuse cookies, or delete certain cookies.
+            Please note that if you disable cookies, some features of our website may not work properly.
+            {% endblocktrans %}
+        </p>
+        <p>
+            {% trans "Learn more about managing cookies in your browser:" %}
+        </p>
+        <ul class="browser-links">
+            <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Chrome</a></li>
+            <li><a href="https://support.mozilla.org/kb/cookies-information-websites-store-on-your-computer" target="_blank" rel="noopener">Firefox</a></li>
+            <li><a href="https://support.apple.com/guide/safari/manage-cookies-sfri11471/mac" target="_blank" rel="noopener">Safari</a></li>
+            <li><a href="https://support.microsoft.com/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener">Edge</a></li>
+        </ul>
+    </section>
+
+    {% if contact_email %}
+    <section class="cookie-policy__contact card">
+        <h2>{% trans "Contact Us" %}</h2>
+        <p>
+            {% blocktrans %}
+            If you have any questions about our use of cookies, please contact us at:
+            {% endblocktrans %}
+        </p>
+        <p>
+            <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+        </p>
+    </section>
+    {% endif %}
+</div>
+
+<style>
+.cookie-policy {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cookie-policy__header {
+    margin-bottom: 2rem;
+}
+
+.cookie-policy__header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.cookie-policy__updated {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.cookie-policy section {
+    margin-bottom: 2rem;
+}
+
+.cookie-group {
+    margin-bottom: 1.5rem;
+}
+
+.cookie-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.cookie-table th,
+.cookie-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.cookie-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+.cookie-table code {
+    background: #f1f1f1;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.cookie-policy__actions {
+    margin-top: 1rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #1976d2;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1565c0;
+}
+
+.browser-links {
+    columns: 2;
+    column-gap: 2rem;
+}
+
+.browser-links a {
+    color: #1976d2;
+}
+</style>
+{% endblock %}

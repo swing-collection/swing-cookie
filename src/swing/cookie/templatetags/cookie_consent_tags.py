@@ -183,3 +183,102 @@ def all_cookie_groups(element_id: str):
         return json_script([], element_id)
     value = [group.for_json() for group in groups.values()]
     return json_script(value, element_id)
+
+
+@register.inclusion_tag("swing_cookie/banner.html", takes_context=True)
+def cookie_banner(context, position="bottom", style="bar"):
+    """
+    Inclusion tag to render the cookie consent banner.
+
+    Usage::
+
+        {% load cookie_consent_tags %}
+        {% cookie_banner %}
+        {% cookie_banner position="top" style="modal" %}
+
+    Args:
+        position: Banner position - "top" or "bottom" (default)
+        style: Banner style - "bar" (default) or "modal"
+
+    The banner will only be shown if the user hasn't given consent yet.
+    """
+    request = context.get("request")
+    if not request:
+        return {
+            "show_banner": False,
+            "cookie_groups": {},
+            "consent_status": {},
+        }
+
+    cookie_dict = get_cookie_dict_from_request(request)
+    cookie_groups = get_all_cookie_groups()
+
+    # Determine if banner should be shown
+    show_banner = True
+    consent_status = {}
+
+    if cookie_groups:
+        for varname, group in cookie_groups.items():
+            version = cookie_dict.get(varname)
+            is_accepted = False
+            is_declined = False
+
+            if version == settings.COOKIE_CONSENT_DECLINE:
+                is_declined = True
+                show_banner = False
+            elif version is not None:
+                current_version = group.get_version()
+                if version >= current_version:
+                    is_accepted = True
+                    show_banner = False
+
+            consent_status[varname] = {
+                "name": group.name,
+                "description": getattr(group, "description", ""),
+                "accepted": is_accepted,
+                "declined": is_declined,
+                "is_required": group.is_required,
+            }
+
+    return {
+        "show_banner": show_banner,
+        "cookie_groups": cookie_groups,
+        "consent_status": consent_status,
+        "cookie_banner_position": position,
+        "cookie_banner_style": style,
+    }
+
+
+@register.simple_tag
+def cookie_consent_url(action="update"):
+    """
+    Return the URL for a cookie consent action.
+
+    Usage::
+
+        {% cookie_consent_url "update" %}
+        {% cookie_consent_url "accept" %}
+        {% cookie_consent_url "decline" %}
+        {% cookie_consent_url "preferences" %}
+        {% cookie_consent_url "status" %}
+        {% cookie_consent_url "policy" %}
+
+    Args:
+        action: The consent action URL to return
+
+    Returns:
+        The URL for the specified action
+    """
+    url_names = {
+        "update": "cookie_consent_update",
+        "accept": "cookie_consent_accept_all",
+        "decline": "cookie_consent_decline_all",
+        "preferences": "cookie_consent_preferences",
+        "status": "cookie_consent_status",
+        "policy": "cookie_consent_policy",
+        "banner": "cookie_consent_banner",
+        "export": "cookie_consent_export",
+        "withdraw": "cookie_consent_withdraw",
+    }
+    url_name = url_names.get(action, "cookie_consent_update")
+    return reverse(url_name)

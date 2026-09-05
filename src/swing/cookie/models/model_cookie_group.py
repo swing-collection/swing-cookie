@@ -136,9 +136,9 @@ class CookieGroupModel(models.Model):
         names and ordering.
         """
 
-        verbose_name: str = _("Cookie Group")
-        verbose_name_plural: str = _("Cookie Groups")
-        ordering: list[str] = ["ordering", "name"]
+        verbose_name = _("Cookie Group")
+        verbose_name_plural = _("Cookie Groups")
+        ordering = ["ordering", "name"]
 
     def __str__(self) -> str:
         """

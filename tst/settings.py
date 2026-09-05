@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Django settings for tests / type-checking."""
 
 from pathlib import Path
@@ -20,7 +26,11 @@ INSTALLED_APPS: list[str] = [
     "swing.cookie.apps.SwingCookieConfig",
 ]
 
-MIDDLEWARE: list[str] = []
+MIDDLEWARE: list[str] = [
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+]
 
 ROOT_URLCONF = "tst.urls"
 
@@ -31,6 +41,7 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],

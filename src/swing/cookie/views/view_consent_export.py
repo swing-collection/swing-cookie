@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Consent Export View
 ===================
@@ -42,16 +47,16 @@ class ConsentExportView(View):
         if request.user.is_authenticated:
             consents = (
                 CookieConsentModel.objects.filter(user=request.user)
-                .select_related("cookie_group", "policy_version")
-                .order_by("-created")
+                .select_related("policy_version")
+                .order_by("-created_at")
             )
         else:
             session_key = request.session.session_key
             if session_key:
                 consents = (
                     CookieConsentModel.objects.filter(session_key=session_key)
-                    .select_related("cookie_group", "policy_version")
-                    .order_by("-created")
+                    .select_related("policy_version")
+                    .order_by("-created_at")
                 )
             else:
                 consents = CookieConsentModel.objects.none()
@@ -59,13 +64,12 @@ class ConsentExportView(View):
         for consent in consents:
             records.append(
                 {
-                    "cookie_group": (
-                        consent.cookie_group.varname
-                        if consent.cookie_group
-                        else None
-                    ),
-                    "accepted": consent.accepted,
-                    "created": consent.created.isoformat(),
+                    "necessary": consent.necessary,
+                    "analytics": consent.analytics,
+                    "marketing": consent.marketing,
+                    "consent_given": consent.consent_given,
+                    "consent_date": consent.consent_date.isoformat(),
+                    "created": consent.created_at.isoformat(),
                     "policy_version": (
                         consent.policy_version.version
                         if consent.policy_version

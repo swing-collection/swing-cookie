@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Detail View Function
 ===========================
@@ -60,7 +65,9 @@ def view_cookie_details_view(
                 ),
                 "secure": cookie.secure,
                 "httponly": cookie.httponly,
-                "group": cookie.group.varname if cookie.group else None,
+                "group": (
+                    cookie.cookiegroup.varname if cookie.cookiegroup else None
+                ),
             }
         )
 

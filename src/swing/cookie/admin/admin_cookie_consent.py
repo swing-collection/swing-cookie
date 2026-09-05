@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Consent Admin
 ====================
@@ -12,7 +17,6 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 # Import | Local
-from ..models import CookieConsentModel
 
 
 class CookieConsentAdmin(admin.ModelAdmin):
@@ -20,15 +24,19 @@ class CookieConsentAdmin(admin.ModelAdmin):
 
     list_display = [
         "get_user_display",
-        "cookie_group",
-        "accepted",
-        "created",
+        "consent_given",
+        "necessary",
+        "analytics",
+        "marketing",
+        "consent_date",
         "policy_version",
         "ip_address",
     ]
     list_filter = [
-        "accepted",
-        "cookie_group",
+        "consent_given",
+        "necessary",
+        "analytics",
+        "marketing",
         ("user", admin.EmptyFieldListFilter),
     ]
     search_fields = [
@@ -40,13 +48,15 @@ class CookieConsentAdmin(admin.ModelAdmin):
     readonly_fields = [
         "user",
         "session_key",
-        "cookie_group",
-        "accepted",
-        "created",
+        "necessary",
+        "analytics",
+        "marketing",
+        "consent_given",
+        "consent_date",
         "policy_version",
         "ip_address",
     ]
-    date_hierarchy = "created"
+    date_hierarchy = "created_at"
 
     @admin.display(description=_("User/Session"))
     def get_user_display(self, obj):

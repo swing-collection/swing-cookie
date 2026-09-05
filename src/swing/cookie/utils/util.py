@@ -20,11 +20,18 @@ including parsing, accepting, declining, and withdrawing consent.
 
 # Import | Standard Library
 import datetime
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, cast
 
 # Import | Local
 from ..conf import settings
 from .cache import all_cookie_groups, get_cookie, get_cookie_group
+
+if TYPE_CHECKING:
+    from typing import Literal
+
+    from django.http import HttpRequest, HttpResponse
+
+    from ..models.model_cookie_group import CookieGroupModel
 
 # Constants imported lazily to avoid circular imports
 ACTION_ACCEPTED = "accepted"
@@ -36,7 +43,7 @@ ACTION_DECLINED = "declined"
 # =============================================================================
 
 
-def parse_cookie_str(cookie: Optional[str]) -> dict[str, str]:
+def parse_cookie_str(cookie: str | None) -> dict[str, str]:
     """
     Parses a cookie consent string into a dictionary.
 
@@ -60,34 +67,37 @@ def parse_cookie_str(cookie: Optional[str]) -> dict[str, str]:
     return dic
 
 
-def dict_to_cookie_str(dic):
+def dict_to_cookie_str(dic: dict[str, str]) -> str:
     """ """
     return "|".join(["%s=%s" % (k, v) for k, v in dic.items() if v])
 
 
-def get_cookie_dict_from_request(request):
+def get_cookie_dict_from_request(request: "HttpRequest") -> dict[str, str]:
     """ """
     cookie_str = request.COOKIES.get(settings.COOKIE_CONSENT_NAME)
     return parse_cookie_str(cookie_str)
 
 
-def set_cookie_dict_to_response(response, dic) -> None:
+def set_cookie_dict_to_response(response: "HttpResponse", dic: dict[str, str]) -> None:
     """ """
     response.set_cookie(
         settings.COOKIE_CONSENT_NAME,
         dict_to_cookie_str(dic),
         max_age=settings.COOKIE_CONSENT_MAX_AGE,
         domain=settings.COOKIE_CONSENT_DOMAIN,
-        secure=settings.COOKIE_CONSENT_SECURE or None,
-        httponly=settings.COOKIE_CONSENT_HTTPONLY or None,
-        samesite=settings.COOKIE_CONSENT_SAMESITE,
+        secure=bool(settings.COOKIE_CONSENT_SECURE),
+        httponly=bool(settings.COOKIE_CONSENT_HTTPONLY),
+        samesite=cast(
+            'Literal["Lax", "Strict", "None", False] | None',
+            settings.COOKIE_CONSENT_SAMESITE,
+        ),
     )
 
 
 def get_cookie_value_from_request(
-    request,
-    varname,
-    cookie=None,
+    request: "HttpRequest",
+    varname: str,
+    cookie: str | None = None,
 ) -> None | bool:
     """
     Returns if cookie group or its specific cookie has been accepted.
@@ -102,15 +112,14 @@ def get_cookie_value_from_request(
     cookie_group = get_cookie_group(varname=varname)
     if not cookie_group:
         return None
+    resolved_cookie = None
     if cookie:
         name, domain = cookie.split(":")
-        cookie = get_cookie(
+        resolved_cookie = get_cookie(
             cookie_group=cookie_group,
             name=name,
             domain=domain,
         )
-    else:
-        cookie = None
 
     version = cookie_dic.get(varname, None)
 
@@ -118,30 +127,30 @@ def get_cookie_value_from_request(
         return False
     if version is None:
         return None
-    if not cookie:
+    if not resolved_cookie:
         v = cookie_group.get_version()
     else:
-        v = cookie.get_version()
+        v = resolved_cookie.get_version()
     if version >= v:
         return True
     return None
 
 
-def get_cookie_groups(varname=None):
+def get_cookie_groups(varname: str | None = None) -> list["CookieGroupModel"]:
     """ """
     cookie_groups = all_cookie_groups()
     if cookie_groups is None:
         return []
     if not varname:
-        return cookie_groups.values()
+        return list(cookie_groups.values())
     keys = varname.split(",")
     return [g for k, g in cookie_groups.items() if k in keys]
 
 
 def accept_cookies(
-    request,
-    response,
-    varname=None,
+    request: "HttpRequest",
+    response: "HttpResponse",
+    varname: str | None = None,
 ) -> None:
     """
     Accept cookies in Cookie Group specified by ``varname``.
@@ -161,7 +170,7 @@ def accept_cookies(
     set_cookie_dict_to_response(response=response, dic=cookie_dic)
 
 
-def delete_cookies(response, cookie_group) -> None:
+def delete_cookies(response: "HttpResponse", cookie_group: "CookieGroupModel") -> None:
     """ """
     if cookie_group.is_deletable:
         for cookie in cookie_group.cookie_set.all():
@@ -169,9 +178,9 @@ def delete_cookies(response, cookie_group) -> None:
 
 
 def decline_cookies(
-    request,
-    response,
-    varname=None,
+    request: "HttpRequest",
+    response: "HttpResponse",
+    varname: str | None = None,
 ) -> None:
     """
     Decline and delete cookies in CookieGroup specified by ``varname``.
@@ -192,7 +201,7 @@ def decline_cookies(
     set_cookie_dict_to_response(response, cookie_dic)
 
 
-def are_all_cookies_accepted(request) -> bool:
+def are_all_cookies_accepted(request: "HttpRequest") -> bool:
     """
     Returns if all cookies are accepted.
     """
@@ -205,7 +214,7 @@ def are_all_cookies_accepted(request) -> bool:
 
 
 def _get_cookie_groups_by_state(
-    request,
+    request: "HttpRequest",
     state: bool | None,
 ) -> list[Any]:
     """ """
@@ -220,14 +229,16 @@ def _get_cookie_groups_by_state(
     ]
 
 
-def get_not_accepted_or_declined_cookie_groups(request) -> list[Any]:
+def get_not_accepted_or_declined_cookie_groups(
+    request: "HttpRequest",
+) -> list[Any]:
     """
     Returns all cookie groups that are neither accepted or declined.
     """
     return _get_cookie_groups_by_state(request, state=None)
 
 
-def get_accepted_cookie_groups(request) -> list[Any]:
+def get_accepted_cookie_groups(request: "HttpRequest") -> list[Any]:
     """
     Returns all cookie groups that are accepted.
     """
@@ -237,7 +248,7 @@ def get_accepted_cookie_groups(request) -> list[Any]:
     )
 
 
-def get_declined_cookie_groups(request) -> list[Any]:
+def get_declined_cookie_groups(request: "HttpRequest") -> list[Any]:
     """
     Returns all cookie groups that are declined.
     """
@@ -247,18 +258,17 @@ def get_declined_cookie_groups(request) -> list[Any]:
     )
 
 
-def is_cookie_consent_enabled(request):
+def is_cookie_consent_enabled(request: "HttpRequest") -> bool:
     """
     Returns if django-cookie-consent is enabled for given request.
     """
     enabled = settings.COOKIE_CONSENT_ENABLED
     if callable(enabled):
-        return enabled(request)
-    else:
-        return enabled
+        return bool(enabled(request))
+    return bool(enabled)
 
 
-def get_cookie_string(cookie_dic) -> str:
+def get_cookie_string(cookie_dic: dict[str, str]) -> str:
     """
     Returns cookie in format suitable for use in javascript.
     """
@@ -273,12 +283,12 @@ def get_cookie_string(cookie_dic) -> str:
     return cookie_str
 
 
-def get_accepted_cookies(request):
+def get_accepted_cookies(request: "HttpRequest") -> list[Any]:
     """
     Returns all accepted cookies.
     """
     cookie_dic = get_cookie_dict_from_request(request)
-    accepted_cookies = []
+    accepted_cookies: list[Any] = []
     cookie_groups = all_cookie_groups()
     if cookie_groups is None:
         return accepted_cookies

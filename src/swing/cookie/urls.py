@@ -12,6 +12,8 @@ Cookie Consent URL Configuration
 This module defines URL patterns for managing cookies, including setting,
 getting, and deleting cookies, as well as handling user consent.
 
+All views are class-based following Django best practices.
+
 """
 
 # =============================================================================
@@ -22,70 +24,93 @@ getting, and deleting cookies, as well as handling user consent.
 from django.urls import path, re_path
 from django.views.decorators.csrf import csrf_exempt
 
-# Import | Local
 # Import | Local Views
 from .views import (
     ConsentExportView,
+    ConsentUpdateView,
+    CookieBannerView,
     CookieConsentWithdrawView,
     CookieGroupAcceptView,
     CookieGroupDeclineView,
     CookieGroupListView,
+    CookiePolicyView,
     CookiePreferencesView,
     CookieStatusView,
 )
-from .views.view_cookie_delete import cookie_delete_view
-from .views.view_cookie_detail import view_cookie_details_view
-from .views.view_cookie_get import get_cookie_view
-from .views.view_cookie_set import set_cookie_view
 
 # =============================================================================
 # URL Patterns
 # =============================================================================
 
-cookie_management_patterns = [
-    path("set-cookie/", set_cookie_view, name="set_cookie_view"),
-    path("get-cookie/", get_cookie_view, name="get_cookie_view"),
-    path("delete-cookie/", cookie_delete_view, name="cookie_delete_view"),
-    path("detail/", view_cookie_details_view, name="cookie_detail_view"),
-]
-
+# Cookie consent management patterns
 cookie_consent_patterns = [
+    # Banner view - renders the cookie banner
+    path(
+        route="banner/",
+        view=CookieBannerView.as_view(),
+        name="cookie_consent_banner",
+    ),
+    # Policy page - detailed cookie information
+    path(
+        route="policy/",
+        view=CookiePolicyView.as_view(),
+        name="cookie_consent_policy",
+    ),
+    # Update consent (AJAX endpoint)
+    path(
+        route="update/",
+        view=csrf_exempt(ConsentUpdateView.as_view()),
+        name="cookie_consent_update",
+    ),
+    # Accept all cookies
     path(
         route="accept/",
         view=csrf_exempt(CookieGroupAcceptView.as_view()),
         name="cookie_consent_accept_all",
     ),
+    # Accept specific cookie group
     re_path(
         route=r"^accept/(?P<varname>[\w-]+)/$",
         view=csrf_exempt(CookieGroupAcceptView.as_view()),
         name="cookie_consent_accept",
     ),
+    # Decline specific cookie group
     re_path(
         route=r"^decline/(?P<varname>[\w-]+)/$",
         view=csrf_exempt(CookieGroupDeclineView.as_view()),
         name="cookie_consent_decline",
     ),
+    # Decline all optional cookies
     path(
         route="decline/",
         view=csrf_exempt(CookieGroupDeclineView.as_view()),
         name="cookie_consent_decline_all",
     ),
+    # Withdraw all consent
     path(
         route="withdraw/",
         view=csrf_exempt(CookieConsentWithdrawView.as_view()),
         name="cookie_consent_withdraw",
     ),
-    path("status/", CookieStatusView.as_view(), name="cookie_consent_status"),
+    # Get current consent status
+    path(
+        route="status/",
+        view=CookieStatusView.as_view(),
+        name="cookie_consent_status",
+    ),
+    # Manage granular preferences
     path(
         route="preferences/",
         view=csrf_exempt(CookiePreferencesView.as_view()),
         name="cookie_consent_preferences",
     ),
+    # Export consent data (GDPR)
     path(
         route="export/",
         view=ConsentExportView.as_view(),
         name="cookie_consent_export",
     ),
+    # List all cookie groups (management page)
     path(
         route="",
         view=CookieGroupListView.as_view(),
@@ -94,4 +119,4 @@ cookie_consent_patterns = [
 ]
 
 # Consolidate all URL patterns
-urlpatterns = cookie_management_patterns + cookie_consent_patterns
+urlpatterns = cookie_consent_patterns

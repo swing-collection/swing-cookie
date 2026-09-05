@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Cookie Admin
 ============
@@ -12,7 +17,6 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 # Import | Local
-from ..models import Cookie
 
 
 class CookieAdmin(admin.ModelAdmin):
@@ -20,28 +24,28 @@ class CookieAdmin(admin.ModelAdmin):
 
     list_display = [
         "name",
-        "group",
+        "cookiegroup",
         "path",
         "domain",
         "secure_badge",
         "httponly_badge",
     ]
     list_filter = [
-        "group",
+        "cookiegroup",
         "secure",
         "httponly",
     ]
     search_fields = [
         "name",
         "domain",
-        "group__varname",
-        "group__name",
+        "cookiegroup__varname",
+        "cookiegroup__name",
     ]
     fieldsets = [
         (
             None,
             {
-                "fields": ("name", "group", "value"),
+                "fields": ("name", "cookiegroup", "value"),
             },
         ),
         (
